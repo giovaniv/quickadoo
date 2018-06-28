@@ -19,7 +19,24 @@ module.exports = knex => {
     res.render('events');
   });
 
-// user completes and submit the event and user forms
+  // admin page
+  router.get('/events/:event_id/users/:user_id', (req, res) => {
+    // use event_id to getthe event data from psql
+    // and check if the event owner is the same is user_id
+    const { event_id, user_id } = req.params;
+    console.log(req.params);
+  });
+
+  router.get("/api/users", (req, res) => {
+    knex
+      .select("*")
+      .from("users")
+      .then((results) => {
+        res.json(results);
+      });
+  });
+
+  // user completes and submit the event and user forms
   // use post() for now for debugging but change it to put()
   router.post('/events', (req, res) => {
     const table = 'users';
@@ -38,14 +55,6 @@ module.exports = knex => {
       });
   })
 
-  router.get("/api/users", (req, res) => {
-    knex
-      .select("*")
-      .from("users")
-      .then((results) => {
-        res.json(results);
-      });
-  });
 
   return router;
 }

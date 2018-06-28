@@ -50,17 +50,15 @@ app.use("/styles", sass({
 }));
 app.use(express.static("public"));
 
-// ROUTES
-// Mount routes
-app.use('/', usersRoutes(knex));
-
-
-
 // METHOD OVERRIDE for POST request
 // override with the X-HTTP-Method-Override header in the request
 app.use(methodOverride('X-HTTP-Method-Override'));
 // override with POST having ?_method=DELETE or UPDATE
 app.use(methodOverride('_method'));
+
+// ROUTES
+// Mount routes
+app.use('/', usersRoutes(knex));
 
 // listen to port
 app.listen(PORT, () => {
