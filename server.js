@@ -27,8 +27,6 @@ const knexLogger = require('knex-logger');
 // ROUTES
 // Seperated Routes for each Resource
 const usersRoutes = require("./routes/users");
-// all other bundles of routes
-const routePaths = require('./routes/paths');
 
 // use ejs as a view engine
 app.set("view engine", "ejs");
@@ -53,10 +51,10 @@ app.use("/styles", sass({
 app.use(express.static("public"));
 
 // ROUTES
-// Mount all resource routes
-app.use("/api/users", usersRoutes(knex));
-// Routes other than resources
-app.use('/', routePaths());
+// Mount routes
+app.use('/', usersRoutes(knex));
+
+
 
 // METHOD OVERRIDE for POST request
 // override with the X-HTTP-Method-Override header in the request
