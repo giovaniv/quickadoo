@@ -2,6 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const { checkRecord, insertRecords } = require('../libs/query-helpers');
+const generateRandomString = require('../libs/makeRandomId');
 
 module.exports = knex => {
   // root. redirect to /home with http status of 302
@@ -61,21 +62,44 @@ module.exports = knex => {
   // use post() for now for debugging but change it to put()
   router.post('/events', (req, res) => {
     // update neccessary tables to save event data
-    console.log(req.body);
+    // user data
+    const { first_name, last_name, email } = req.body;
+    const { title, description } = req.body;
+
+    const user = { first_name, last_name, email };
+    const event = { title, description };
+    event.admin_url = generateRandomString(7);
+    event.poll_url = generateRandomString(7);
+
+    const option = {
+      'name': req.body['name-1'],
+      'start_time': req.body['start_time-1'],
+      'end_time': req.body['end_time-1']
+    };
+    console.log(user);
+    // console.log(event);
+    // console.log(option);
+
+    checkRecord(knex, user, 'users')
+      .then(()=>{
+        console.log('not exist');
+        //     // record doesn't exist. insert the data
+        //     insertRecords(knex, table, req.body)
+        //       .then(result => console.log(result))
+        //       .catch(err => console.log(err));
+      })
+      .catch(err => {
+        // duplicate exists. print out an error
+        if (err) console.log(err.message, err.record);
+      })
     // redirect to /events/:event_id where event_id === admin_url so that admin page loads up
     // const table = 'users';
     // // test run
     // // const { name } = req.body;
     // checkRecord(knex, req.body, table)
     //   .then(() => {
-    //     // record doesn't exist. insert the data
-    //     insertRecords(knex, table, req.body)
-    //       .then(result => console.log(result))
-    //       .catch(err => console.log(err));
     //   })
     //   .catch(err => {
-    //     // duplicate exists. print out an error
-    //     if (err) console.log(err.message, err.record);
     //   });
   })
 
