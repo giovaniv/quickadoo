@@ -10,16 +10,19 @@
 //   });
 // });
 $(document).ready(function(){
-  console.log('1');
-$('input[type="submit"]').click(function(e) {
-  console.log("click");
-  e.preventDefault();
-  
-  $(".right-icon").toggle();
-  $(".left-icon").toggle();
-  // $("form-control").attr('readonly');
-  // $("form-control.options.col-6").attr('readonly');
-  // $("form-control.col-6").attr('readonly');
+  let editable = false;
+
+  $('input[type="submit"]').click(function(e) {
+    e.preventDefault();
+    $(".right-icon").toggle();
+    $(".left-icon").toggle();
+    if (editable === false) {
+      $('.form-control').attr('readonly', true);
+      editable = true;
+    } else {
+      $('.form-control').attr('readonly', false);
+      editable = false;
+    };
 })
 });
 
