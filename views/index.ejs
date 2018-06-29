@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Home Page</title>
 
-    <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
-    <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
-    <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
+<head>
+  <% include partials/_header %>
+</head>
 
-    <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
-    <script type="text/javascript" src="/scripts/app.js"></script>
-  </head>
+<body>
+  <main class='container shadow' id='main-window'>
+    <header>
+      <% include partials/_navbar %>
+    </header>
+    <main></main>
+    <footer></footer>
+  </main>
+</body>
 
-  <body>
-    <h1>Hello World!</h1>
-  </body>
 </html>
