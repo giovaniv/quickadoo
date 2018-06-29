@@ -61,7 +61,7 @@ module.exports = knex => {
   // user submits the complete form
   router.post('/events', (req, res) => {
     // update neccessary tables to save event data
-    // user data
+
     const { first_name, last_name, email } = req.body;
     const user = { first_name, last_name, email };
 

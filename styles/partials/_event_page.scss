@@ -1,5 +1,4 @@
 .event-page {
-  margin-top: 30vh;
   border-radius: $radius;
   height: 100%;
   text-align: center;
@@ -10,8 +9,8 @@
   input, textarea {
     margin: 0 10px;
   }
-  span.left-icon {
-    width: 40px;
+  .left-icon {
+    width: 20px;
     text-align: right;
   }
   input[type='submit'] {

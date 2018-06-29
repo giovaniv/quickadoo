@@ -1,22 +1,25 @@
-<form action='/events' method='POST' class='col-10'>
+<form action='/events' method='POST' class='needs-validation col-10' novalidate>
   <!-- user info -->
   <div class='user'>
+    <!-- email -->
     <div class="form-group">
       <div class="input-group">
-        <span class='left-icon'>
-          <i class="material-icons">alternate_email</i>
-        </span>
-        <input type="email" name='email' class="form-control col-6" placeholder="Email">
+        <i class="material-icons left-icon">alternate_email</i>
+        <input type="email" name='email' class="form-control col-6" placeholder="Email" required>
+        <div class='invalid-feedback'>
+          Please provide a valid email.
+        </div>
       </div>
     </div>
-
+    <!-- name -->
     <div class="form-group">
       <div class="input-group">
-        <span class='left-icon'>
-          <i class="material-icons">person_outline</i>
-        </span>
-        <input type="text" name='first_name' class="form-control col-3" placeholder="First name">
-        <input type="text" name='last_name' class="form-control col-3" placeholder="Last name">
+        <i class="material-icons left-icon">person_outline</i>
+        <input type="text" name='first_name' class="form-control col-3" placeholder="First name" required>
+        <input type="text" name='last_name' class="form-control col-3" placeholder="Last name" required>
+        <div class='invalid-feedback'>
+          Please provide your first and last names.
+        </div>
       </div>
     </div>
   </div>
@@ -27,19 +30,17 @@
     <!-- event title -->
     <div class="form-group">
       <div class="input-group">
-        <span class='left-icon'>
-          <i class="material-icons">title</i>
-        </span>
-        <input type="text" name='title' class="form-control" placeholder="Enter title (i.e. What movie to watch?)">
+        <i class="material-icons left-icon">title</i>
+        <input type="text" name='title' class="form-control" placeholder="Enter title (i.e. What movie to watch?)" required>
+        <div class='invalid-feedback'>
+          Please provide an event title.
+        </div>
       </div>
     </div>
-
     <!-- title description -->
     <div class="form-group">
       <div class="input-group">
-        <span class='left-icon'>
-          <i class="material-icons">subject</i>
-        </span>
+        <i class="material-icons left-icon">subject</i>
         <textarea name='description' class="form-control" placeholder="Add description"></textarea>
       </div>
     </div>
@@ -51,34 +52,29 @@
     <!-- option name -->
     <div class="form-group">
       <div class="input-group">
-        <span class='left-icon'>
-          <p>1</p>
-        </span>
-        <input type="text" name='name-1' class="form-control options col-6" placeholder="Option name">
+        <p class='left-icon'>1</p>
+        <input type="text" name='name-1' class="form-control options col-6" placeholder="Option name" required>
+        <div class='invalid-feedback'>
+          Please name your option.
+        </div>
         <span class='right-icon'>
           <i class="material-icons">file_copy</i>
           <i class="material-icons">delete</i>
         </span>
       </div>
     </div>
-
     <!-- option time -->
     <div class="form-group">
       <div class="input-group">
-        <span class='left-icon'>
-          <i class="material-icons">access_time</i>
-        </span>
+        <i class="material-icons left-icon">access_time</i>
         <input type="text" name='start_time-1' class="form-control col-6" placeholder="Start time">
         <input type="text" name='end_time-1' class="form-control col-6" placeholder="End time">
       </div>
     </div>
-
     <!-- option note -->
     <div class="form-group">
       <div class="input-group">
-        <span class='left-icon'>
-          <i class="material-icons">create</i>
-        </span>
+        <i class="material-icons left-icon">create</i>
         <textarea name='note-1' class="form-control" placeholder="Add notes"></textarea>
       </div>
     </div>
