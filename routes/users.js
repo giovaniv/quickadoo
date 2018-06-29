@@ -14,17 +14,38 @@ module.exports = knex => {
     res.render('index');
   });
 
-  // 'click to start' btn on /home renders events.ejs
+  // 'click to start' btn on /home renders event.ejs
   router.get('/events', (req, res) => {
-    res.render('events');
+    res.render('event');
   });
 
-  // admin page
-  router.get('/events/:event_id/users/:user_id', (req, res) => {
-    // use event_id to getthe event data from psql
-    // and check if the event owner is the same is user_id
-    const { event_id, user_id } = req.params;
-    console.log(req.params);
+  // event_id can be either admin_url (only admin knows it) or poll_url (public)
+  router.get('/events/:event_id', (req, res) => {
+    // use event_id to see if there is a corresponding event saved in psql
+    const { event_id } = req.params;
+
+    knex.select('*').from('events')
+      .where(function () {
+        this.where('admin_url', event_id).orWhere('poll_url', event_id)
+      })
+      .then(rows => {
+        // if rows.length = 0 => there is no event in the database
+        // render index.ejs with an error message
+        if (!rows.length) {
+          res.status(400).render('index', {
+            message: "Sorry, we couldn't find the poll you requested :("
+          });
+        }
+        // if event_id === admin_url, usere is an admin.
+        // Render event.ejs for the admin
+        if (rows.admin_url === event_id) {
+          res.status(200).render('event');
+        } else {
+          // event_id === poll_url. Render event.ejs for attendees
+          res.status(200).render('event');
+        }
+      })
+      .catch(err => console.log(err));
   });
 
   router.get("/api/users", (req, res) => {
@@ -39,6 +60,8 @@ module.exports = knex => {
   // user completes and submit the event and user forms
   // use post() for now for debugging but change it to put()
   router.post('/events', (req, res) => {
+    // update neccessary tables to save event data
+    // redirect to /events/:event_id where event_id === admin_url so that admin page loads up
     const table = 'users';
     // test run
     // const { name } = req.body;
