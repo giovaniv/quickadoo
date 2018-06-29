@@ -61,21 +61,22 @@ module.exports = knex => {
   // use post() for now for debugging but change it to put()
   router.post('/events', (req, res) => {
     // update neccessary tables to save event data
+    console.log(req.body);
     // redirect to /events/:event_id where event_id === admin_url so that admin page loads up
-    const table = 'users';
-    // test run
-    // const { name } = req.body;
-    checkRecord(knex, req.body, table)
-      .then(() => {
-        // record doesn't exist. insert the data
-        insertRecords(knex, table, req.body)
-          .then(result => console.log(result))
-          .catch(err => console.log(err));
-      })
-      .catch(err => {
-        // duplicate exists. print out an error
-        if (err) console.log(err.message, err.record);
-      });
+    // const table = 'users';
+    // // test run
+    // // const { name } = req.body;
+    // checkRecord(knex, req.body, table)
+    //   .then(() => {
+    //     // record doesn't exist. insert the data
+    //     insertRecords(knex, table, req.body)
+    //       .then(result => console.log(result))
+    //       .catch(err => console.log(err));
+    //   })
+    //   .catch(err => {
+    //     // duplicate exists. print out an error
+    //     if (err) console.log(err.message, err.record);
+    //   });
   })
 
 

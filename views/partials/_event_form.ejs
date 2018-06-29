@@ -1,4 +1,4 @@
-<form class='col-6'>
+<form action='/events' method='POST' class='col-6'>
   <!-- event -->
   <div class='event'>
     <!-- event title -->
@@ -7,7 +7,7 @@
         <span class='left-icon'>
           <i class="material-icons">title</i>
         </span>
-        <input type="text" name='event-title' class="form-control" placeholder="Enter title (i.e. What movie to watch?)">
+        <input type="text" name='title' class="form-control" placeholder="Enter title (i.e. What movie to watch?)">
       </div>
     </div>
 
@@ -17,7 +17,7 @@
         <span class='left-icon'>
           <i class="material-icons">subject</i>
         </span>
-        <textarea name='event-description' class="form-control" placeholder="Add description"></textarea>
+        <textarea name='description' class="form-control" placeholder="Add description"></textarea>
       </div>
     </div>
   </div>
@@ -31,7 +31,7 @@
         <span class='left-icon'>
           <p>1</p>
         </span>
-        <input type="text" name='option_name1' class="form-control options col-6" placeholder="Option name">
+        <input type="text" name='name-1' class="form-control options col-6" placeholder="Option name">
         <span class='right-icon'>
           <i class="material-icons">file_copy</i>
           <i class="material-icons">delete</i>
@@ -45,8 +45,8 @@
         <span class='left-icon'>
           <i class="material-icons">access_time</i>
         </span>
-        <input type="text" name='start_time1' class="form-control col-6" placeholder="Start time">
-        <input type="text" name='end_time1' class="form-control col-6" placeholder="End time">
+        <input type="text" name='start_time-1' class="form-control col-6" placeholder="Start time">
+        <input type="text" name='end_time-1' class="form-control col-6" placeholder="End time">
       </div>
     </div>
 
@@ -56,9 +56,10 @@
         <span class='left-icon'>
           <i class="material-icons">create</i>
         </span>
-        <textarea name='option-note' class="form-control" placeholder="Add notes"></textarea>
+        <textarea name='note-1' class="form-control" placeholder="Add notes"></textarea>
       </div>
     </div>
   </div>
   <!-- option end -->
+  <input type="submit" class="btn btn-primary" value='SUBMIT'>
 </form>
