@@ -1,0 +1,15 @@
+.event-page {
+  @extend %shadow-effect;
+  border: 1px lightgrey solid;
+  text-align: center;
+  padding: 0;
+  form {
+    margin: 50px auto;
+    width: 70%;
+  }
+  span.left-icon {
+    width: 40px;
+    text-align: right;
+    padding-right: 8px;
+  }
+}
