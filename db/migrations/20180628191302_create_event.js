@@ -22,7 +22,7 @@ exports.up = function (knex, Promise) {
             // table.integer('event_id').inTable('events').references('id');
             table.integer('event_id');
             table.foreign('event_id').references('events.id');
-    })
+        });
     })
     .then(function () {
         return knex.schema.createTable('option_voters', function (table) {
@@ -33,12 +33,14 @@ exports.up = function (knex, Promise) {
             table.integer('person_id');
             table.foreign('option_id').references('options.id');
             table.foreign('person_id').references('users.id');
-    });
+        });
     });
 };
 
 exports.down = function (knex, Promise) {
-    return knex.schema.dropTable('events');
-    return knex.schema.dropTable('options');
-    return knex.schema.dropTable('option_voters');
+    return Promise.all([
+        knex.schema.dropTable('option_voters'),
+        knex.schema.dropTable('options'),
+        knex.schema.dropTable('events'),
+    ]);    
 };
