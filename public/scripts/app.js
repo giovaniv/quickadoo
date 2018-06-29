@@ -4,9 +4,9 @@ $(() => {
     url: "/api/users"
   }).done((users) => {
     // console.log(users);
-    for(user of users) {
-      $("<div>").text(user.email + " " + user.email + " " + user.last_name).appendTo($("body"));
-    }
+    // for(user of users) {
+    //   $("<div>").text(user.email + " " + user.email + " " + user.last_name).appendTo($("body"));
+    // }
   });
 
   // $.ajax({

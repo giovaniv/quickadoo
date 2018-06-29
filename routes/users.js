@@ -58,49 +58,62 @@ module.exports = knex => {
       });
   });
 
-  // user completes and submit the event and user forms
-  // use post() for now for debugging but change it to put()
+  // user submits the complete form
   router.post('/events', (req, res) => {
     // update neccessary tables to save event data
     // user data
     const { first_name, last_name, email } = req.body;
-    const { title, description } = req.body;
-
     const user = { first_name, last_name, email };
-    const event = { title, description };
-    event.admin_url = generateRandomString(7);
-    event.poll_url = generateRandomString(7);
 
+    // event data
+    const { title, description } = req.body;
+    const event = {
+      title,
+      description,
+      created_at: new Date(),
+      admin_url: generateRandomString(7),
+      poll_url: generateRandomString(7)
+    };
+
+    // options
     const option = {
       'name': req.body['name-1'],
       'start_time': req.body['start_time-1'],
-      'end_time': req.body['end_time-1']
+      'end_time': req.body['end_time-1'],
+      'note': req.body['note-1']
     };
-    console.log(user);
-    // console.log(event);
-    // console.log(option);
 
+    // check user record
     checkRecord(knex, user, 'users')
-      .then(()=>{
+      // user doesn't exist in users tb
+      .then(() => {
         console.log('not exist');
-        //     // record doesn't exist. insert the data
-        //     insertRecords(knex, table, req.body)
-        //       .then(result => console.log(result))
-        //       .catch(err => console.log(err));
       })
-      .catch(err => {
-        // duplicate exists. print out an error
-        if (err) console.log(err.message, err.record);
+      // user exists in db. retrieve the user_id
+      .catch(duplicate => {
+        console.log('user exists in db. retrieving user_id');
+        return duplicate.record[0].id;
       })
-    // redirect to /events/:event_id where event_id === admin_url so that admin page loads up
-    // const table = 'users';
-    // // test run
-    // // const { name } = req.body;
-    // checkRecord(knex, req.body, table)
-    //   .then(() => {
-    //   })
-    //   .catch(err => {
-    //   });
+      // use the user_id to insert the event record in events tb
+      .then(creator_id => {
+        event.creator_id = creator_id;
+        // insert the event data along with the user id
+        return insertRecords(knex, 'events', event)
+      })
+      .catch(err => console.log(err.message))
+      // return the event_id and insert option data with it
+      .then(result => {
+        console.log(result.message);
+
+        option.event_id = result.rowId[0];
+        return insertRecords(knex, 'options', option);
+      })
+      // print out any error while inserting option data
+      .then(result => {
+        console.log('1111111111111111111111');
+      })
+      .catch(err => console.log(err));
+
   })
 
 
