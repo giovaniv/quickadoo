@@ -1,0 +1,21 @@
+.landing-page {
+  @extend %shadow-effect;
+  margin-top: 30vh;
+  width: 80vh;
+  border: 1px lightgrey solid;
+  text-align: center;
+  padding: 50px 0px;
+  main {
+    text-align: left;
+    margin: 0 auto;
+    width: 70%;
+    &>* {
+      // '>' refers to immediate children
+      margin-bottom: 25px;
+    }
+    img {
+      width: 40%;
+      vertical-align: bottom;
+    }
+  }
+}
