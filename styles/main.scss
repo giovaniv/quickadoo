@@ -1,17 +1,6 @@
-
-body {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    -webkit-transform: rotate(-3deg);
-    -moz-transform: rotate(-3deg);
-    -o-transform: rotate(-3deg);
-    -ms-transform: rotate(-3deg);
-    transform: rotate(-3deg);
-    -webkit-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-
-}
+@import 'partials/_variables';
+@import 'partials/_layout';
+@import 'partials/_navbar';
 
 nav {
     background-color: whitesmoke;
