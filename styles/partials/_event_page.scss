@@ -7,12 +7,17 @@
   form {
     margin: 50px auto;
   }
+  input, textarea {
+    margin: 0 10px;
+  }
   span.left-icon {
     width: 40px;
     text-align: right;
-    padding-right: 8px;
   }
   input[type='submit'] {
     @extend %shadow-effect;
+  }
+  i{
+    color: rgb(114, 114, 114);
   }
 }
