@@ -1,8 +1,7 @@
 .landing-page {
-  @extend %shadow-effect;
   margin-top: 30vh;
   width: 80vh;
-  border: 1px lightgrey solid;
+  border-radius: $radius;
   text-align: center;
   padding: 50px 0px;
   main {
@@ -17,5 +16,8 @@
       width: 40%;
       vertical-align: bottom;
     }
+  }
+  input {
+    @extend %shadow-effect;
   }
 }
