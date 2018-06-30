@@ -1,3 +1,17 @@
+// calculate how many options were returned
+const calculateOptionLen = (options, fields) => (Object.keys(userData).length - 5) / optionFields.length;
+
+// take out all the numbers from option keys (i.e. name-1 => name)
+const modifyOptionKeys = (optionObj, optionKeys, eventId, i) => {
+  const optionResults = {};
+  optionKeys.forEach(key => {
+    const fieldName = `${key}-${i + 1}`;
+    optionResults[key] = optionObj[fieldName] ? optionObj[fieldName] : null;
+  })
+  optionResults.event_id = eventId;
+  return optionResults;
+};
+
 // parse out option fields from form data and return them as an array of objects
 const parseOptions = (userData, event_id) => {
   // options: calculate how many options were returned
@@ -5,15 +19,11 @@ const parseOptions = (userData, event_id) => {
   // 5: (3 user data fields, 2 event data fields))
   // 4: (4 option fields)
   const optionFields = ['name', 'start_time', 'end_time', 'note'];
-  const optionLen = (Object.keys(userData).length - 5) / optionFields.length;
+  const optionLen = calculateOptionLen(userData, optionFields);
   const results = [];
   for (let i = 0; i < optionLen; i++) {
-    const options = {};
-    optionFields.forEach(field => {
-      const fieldName = `${field}-${i + 1}`;
-      options[field] = userData[fieldName] ? userData[fieldName] : null;
-    })
-    options.event_id = event_id;
+    const options = modifyOptionKeys(userData, optionFields, event_id, i);
+    // results should be an array of objects to insert to db
     results.push(options);
   }
   return results;
