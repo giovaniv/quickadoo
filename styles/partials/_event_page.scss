@@ -20,4 +20,21 @@
   i{
     color: rgb(114, 114, 114);
   }
+  i.fas.fa-thumbs-up {
+    font-size: 24px;
+    vertical-align: super;
+    // float: left;
+    display: none;
+  }
+  #counter {
+    font-size: 24px;
+    // vertical-align: super;
+    display: none;
+    float: right;
+    margin-left: 10px;
+  }
+  input[value='CREATE'] {
+    @extend %shadow-effect;
+    display: none;
+  }
 }

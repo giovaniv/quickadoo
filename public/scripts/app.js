@@ -12,10 +12,13 @@
 $(document).ready(function(){
   let editable = false;
 
-  $('input[type="submit"]').click(function(e) {
+  $('input[value="PREVIEW"]').click(function(e) {
     e.preventDefault();
-    $(".right-icon").toggle();
+    $(".material-icons").toggle();
     $(".left-icon").toggle();
+    $(".fas.fa-thumbs-up").toggle();
+    $("#counter").toggle();
+    $('input[value="CREATE"]').slideToggle("slow");
     if (editable === false) {
       $('.form-control').attr('readonly', true);
       editable = true;
