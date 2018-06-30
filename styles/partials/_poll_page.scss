@@ -1,0 +1,30 @@
+.select {
+ border: 1px solid gray;
+ padding: 10px 0px 10px 10px;
+ margin: 10px 10px 0 10px;
+}
+
+.select h3 {
+ float: left;
+ clear: both;
+}
+
+.select p {
+  display: inline-block;
+  margin-right: 10px;
+  float: right;
+}
+
+.select input {
+  display: inline-block;
+}
+
+.select i {
+  display: inline-block;
+}
+
+#sendVote {
+  margin: 0 auto;
+  display: block;
+  clear: both;
+}

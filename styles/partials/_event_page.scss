@@ -20,13 +20,13 @@
   i{
     color: rgb(114, 114, 114);
   }
-  i.fas.fa-thumbs-up {
+  .right-icon i.fas.fa-thumbs-up {
     font-size: 24px;
     vertical-align: super;
     // float: left;
     display: none;
   }
-  input[type='checkbox'] {
+  .right-icon input {
     width: 24px;
     height: 24px;
     display: none;
