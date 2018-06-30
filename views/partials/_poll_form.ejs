@@ -1,34 +1,56 @@
-<div>
-  <h1>Movie Night</h1>
+<div class="container">
+  <h1><strong>Movie Night</strong></h1>
   <h3>Let's head to the theaters!</h3>
-</div>
-<div>
   <p>By: Alice Wonder</p>
-  <p>Created at: 2018.06.30 12:00</p>
+  <p>Created at: 30/06/2018 at 12:00</p>
 </div>
 
-<div class="select">
-  <h3>Avengers 9:00</h3>
-  <input type="checkbox">
-  <i class="fas fa-thumbs-up"></i>
-  <p class="votes">2 Votes</p>
-  <p>C.H.</p><p>A.W.</p>
-</div>
-
-<div class="select">
-  <h3>Avengers 10:00</h3>
-  <input type="checkbox">
-  <i class="fas fa-thumbs-up"></i>
-  <p class="votes">1 Votes</p>
-  <p>C.H.</p>
-</div>
-
-<div class="select">
-  <h3>Titanic 2: Return of the Iceberg! 11:00</h3>
-  <input type="checkbox">
-  <i class="fas fa-thumbs-up"></i>
-  <p class="votes">103 Votes</p>
-  <p>C.H.</p><p>A.W.</p>
-</div>
+<table class="table table-bordered shadow">
+  <thead>
+    <tr>
+      <th scope="col" class="table-success">&nbsp;</th>
+      <th scope="col" class="table-success">Option</th>
+      <th scope="col" class="table-success">Date</th>
+      <th scope="col" class="table-success">Time</th>
+      <th scope="col" class="table-success">Attendees</th>
+      <th scope="col" class="table-success">Any comment?</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row" class="text-left">
+        <input type="checkbox" name="option1">
+      </th>
+      <td>Jurassic Park</td>
+      <td>02-07-2018</td>
+      <td>19:00</td>
+      <td>SW, BK, GV and +7</td>
+      <td><input type=text name="note1"></td>
+    </tr>
+    <tr>
+      <th scope="row" class="text-left">
+        <input type="checkbox" name="option2">
+        <i class="fas fa-thumbs-up"></i>
+      </th>
+      <td>Titanic 2</td>
+      <td>03-07-2018</td>
+      <td>19:00</td>
+      <td>SW, BK, GV and +17</td>
+      <td><input type=text name="note2"></td>
+    </tr>
+    <tr>
+      <th scope="row" class="text-left">
+        <input type="checkbox" name="option3">
+      </th>
+      <td>Avengers</td>
+      <td>04-07-2018</td>
+      <td>19:00</td>
+      <td>SW, BK and GV</td>
+      <td><input type=text name="note3"></td>
+    </tr>
+  </tbody>
+</table>
 
 <input type="submit" id="sendVote" class="btn btn-primary" value='VOTE'>
+
+<p></p>

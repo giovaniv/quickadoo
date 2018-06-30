@@ -51,7 +51,8 @@ module.exports = knex => {
         if(event_id === formData[0].admin_url){
           res.status(200).render('admin',formData);
         }else{
-          res.status(200).render('pool',formData);
+          console.log(formData);
+          res.status(200).render('poll',formData);
         }
       })
       .catch(err => {
