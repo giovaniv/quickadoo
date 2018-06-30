@@ -1,9 +1,15 @@
 $(() => {
+  const { activateCopyBtn, activateDeleteBtn, makeUrlCopyBtn } = activateBtns;
+
+  // activate form validator
   validateForm();
-
-  activateBtns.activateCopyBtn();
-  activateBtns.activateDeleteBtn();
-
+  // change all icon cursors to pointer
+  $('i.material-icons').css('cursor', 'pointer');
+  // activate copy and delete button for options
+  activateCopyBtn();
+  activateDeleteBtn();
+  // activate the url-copy button
+  makeUrlCopyBtn();
 
 
   // let editable = false;
@@ -64,7 +70,13 @@ $(() => {
       url: '/events',
       method: 'POST',
       data: formJSON,
-      dataType: 'json'
+      dataType: 'json',
+      success: urls => {
+        window.location = `${window.location.href}/${urls.admin_url}`;
+      },
+      error: {
+
+      }
     })
   })
 
