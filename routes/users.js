@@ -39,10 +39,10 @@ module.exports = knex => {
         // if event_id === admin_url, usere is an admin.
         // render event.ejs for the admin
         if (rows[0].admin_url === event_id) {
-          res.status(200).render('event');
+          res.status(200).render('admin_page');
         } else {
           // event_id === poll_url. Render event.ejs for attendees
-          res.status(200).render('event');
+          res.status(200).render('poll_page');
         }
       })
       .catch(err => console.log(err));
