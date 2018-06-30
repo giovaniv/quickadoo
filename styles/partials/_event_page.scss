@@ -1,22 +1,36 @@
 .event-page {
   border-radius: $radius;
   height: 100%;
-  text-align: center;
   padding: 0;
+  text-align: center;
   form {
     margin: 50px auto;
+    .invalid-feedback {
+      text-align: left;
+      margin-left: 30px;
+    }
   }
-  input, textarea {
+  input,
+  textarea {
     margin: 0 10px;
   }
   .left-icon {
     width: 20px;
     text-align: right;
   }
+  .right-icon {
+    // width: 40%;
+    display: flex;
+    justify-content: space-around;
+    * {
+      vertical-align: middle;
+      font-size: 35px;
+    }
+  }
   input[type='submit'] {
     @extend %shadow-effect;
   }
-  i{
+  i {
     color: rgb(114, 114, 114);
   }
 }
