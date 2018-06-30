@@ -26,6 +26,11 @@
     // float: left;
     display: none;
   }
+  input[type='checkbox'] {
+    width: 24px;
+    height: 24px;
+    display: none;
+  }
   #counter {
     font-size: 24px;
     // vertical-align: super;

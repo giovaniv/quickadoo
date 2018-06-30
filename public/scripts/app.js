@@ -18,6 +18,7 @@ $(document).ready(function(){
     $(".left-icon").toggle();
     $(".fas.fa-thumbs-up").toggle();
     $("#counter").toggle();
+    $('input[type="checkbox"]').toggle();
     $('input[value="CREATE"]').slideToggle("slow");
     if (editable === false) {
       $('.form-control').attr('readonly', true);
