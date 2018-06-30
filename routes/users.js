@@ -119,7 +119,14 @@ module.exports = knex => {
       })
       // if inserting options was UNSUCCESSFUL, display error message
       .catch(err => console.log(err));
-  })
+  });
+
+
+
+  router.get('/events/:event_id/thanks', (req, res) => {
+    //res.render('thanks',req.params.event_id);
+    res.render('thanks');
+  });
 
 
   return router;
