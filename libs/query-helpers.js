@@ -1,5 +1,5 @@
 // calculate how many options were returned
-const calculateOptionLen = (options, fields) => (Object.keys(userData).length - 5) / optionFields.length;
+const calculateOptionLen = (options, fields) => (Object.keys(options).length - 5) / fields.length;
 
 // take out all the numbers from option keys (i.e. name-1 => name)
 const modifyOptionKeys = (optionObj, optionKeys, eventId, i) => {
@@ -36,8 +36,8 @@ const capitaliseFirstLetter = name => name.replace(/^\w/, letter => letter.toUpp
 const generateRandomString = length => Math.random().toString(36).substring(2, length + 2);
 
 // check if there is any duplicate user data
-const checkExistingUser = (knex, searchObj) => {
-  const { first_name, last_name, email } = searchObj;
+const checkExistingUser = (knex, userObj) => {
+  const { first_name, last_name, email } = userObj;
   return new Promise((resolve, reject) => {
     knex.where(function () {
       this.where('first_name', first_name)
@@ -46,6 +46,9 @@ const checkExistingUser = (knex, searchObj) => {
     }).select('id').table('users')
       .then(user_id => {
         resolve(user_id);
+      })
+      .catch(err =>{
+        reject(err);
       })
   });
 };
