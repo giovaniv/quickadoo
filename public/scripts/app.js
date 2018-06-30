@@ -47,4 +47,24 @@ $(() => {
       dataType: 'json'
     })
   })
+
+
+  let editable = false;
+
+  $('input[value="PREVIEW"]').click(function (e) {
+    e.preventDefault();
+    $(".material-icons").toggle();
+    $(".left-icon").toggle();
+    $(".fas.fa-thumbs-up").toggle();
+    $("#counter").toggle();
+    $(".right-icon input").toggle();
+    $('input[value="CREATE"]').slideToggle("slow");
+    if (editable === false) {
+      $('.form-control').attr('readonly', true);
+      editable = true;
+    } else {
+      $('.form-control').attr('readonly', false);
+      editable = false;
+    };
+  })
 });
