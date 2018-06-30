@@ -27,16 +27,17 @@ module.exports = knex => {
     const checkExistingEvent = (knex, event_id) => {
       return new Promise((resolve, reject) => {
         knex.select('*').from('options')
-        .join('events', 'options.event_id', 'events.id')
-        .join('users', 'events.creator_id', 'users.id')
+          .join('events', 'options.event_id', 'events.id')
+          .join('users', 'events.creator_id', 'users.id')
           .where(function () {
             this.where('events.admin_url', event_id).orWhere('events.poll_url', event_id)
           })
           .then(eventRecord => {
-            resolve(eventRecord);
-          })
-          .catch(err => {
-            reject(err);
+            if (eventRecord.length) {
+              resolve(eventRecord);
+            } else {
+              reject();
+            }
           })
       })
     };
@@ -47,8 +48,14 @@ module.exports = knex => {
     }
 
     getEventRecord(knex, event_id)
-      .then(success => {
-        console.log(success);
+      .then(formData => {
+        if (event_id === formData[0].admin_url) {
+          console.log('render admin page');
+          res.status(200).render('event', { formData: formData });
+        } else {
+          console.log('poll');
+        }
+        // status
       })
       .catch(err => {
         console.log(err);
@@ -111,8 +118,11 @@ module.exports = knex => {
 
     updateFormData(knex, user, event, formValues).then(ids => {
       console.log('update complete', ids);
-      const admin_page = `/events/${event.admin_url}`;
-      res.redirect(admin_page);
+
+      res.status(200).send({
+        admin_url: event.admin_url,
+        poll_url: event.poll_url
+      });
     }).catch(err => {
       console.log(err);
     });
