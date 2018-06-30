@@ -1,8 +1,7 @@
 'use strict';
 const express = require('express');
 const router = express.Router();
-const { checkRecord, insertRecords } = require('../libs/query-helpers');
-const generateRandomString = require('../libs/makeRandomId');
+const { updateFormData, generateRandomString, capitaliseFirstLetter } = require('../libs/query-helpers');
 
 module.exports = knex => {
   // root. redirect to /home with http status of 302
@@ -61,12 +60,18 @@ module.exports = knex => {
   // user submits the complete form
   router.post('/events', (req, res) => {
     // update neccessary tables to save event data
+    // Note: form is validated on the client side
+    const formValues = JSON.parse(Object.keys(req.body)[0]);
+
     // user data
-    const { first_name, last_name, email } = req.body;
+    let { first_name, last_name, email } = formValues;
+    // make sure first letter of name is capitalised
+    first_name = capitaliseFirstLetter(first_name);
+    last_name = capitaliseFirstLetter(last_name);
     const user = { first_name, last_name, email };
 
     // event data
-    const { title, description } = req.body;
+    const { title, description } = formValues;
     const event = {
       title,
       description,
@@ -75,59 +80,12 @@ module.exports = knex => {
       poll_url: generateRandomString(7)
     };
 
-    // options
-    const option = {
-      'name': req.body['name-1'],
-      'start_time': req.body['start_time-1'] ? req.body['start_time-1'] : null,
-      'end_time': req.body['end_time-1'] ? req.body['end_time-1'] : null,
-      'note': req.body['note-1']
-    };
-
-    // 1. check user record
-    checkRecord(knex, user, 'users')
-      // if user doesn't exist in users tb, add the new user
-      .then(() => {
-        console.log("user doesn't exist in db. adding user...");
-        return insertRecords(knex, 'users', user);
-      })
-      // if user exists in db. retrieve the user_id
-      .catch(duplicate => {
-        console.log('user exists in db. retrieving user_id');
-        return duplicate.record[0].id;
-      })
-      // insert the user_id & the event record in events tb
-      .then(creator_id => {
-        console.log('user added!');
-        event.creator_id = creator_id;
-        return insertRecords(knex, 'events', event)
-      })
-      // upon success, append the new event row's unique id (event_id) to the options object
-      // then insert the options data into options tb
-      .then(result => {
-        console.log(result.message);
-        option.event_id = result.rowId[0];
-        return insertRecords(knex, 'options', option);
-      })
-      // if inserting event record was UNSUCCESSFUL, display error message
-      .catch(err => console.log(err.message))
-      // if options were added to options tb, display a success message
-      .then(result => {
-        console.log(result.message);
-        // redirect user to the admin page!
-        const adminPage = `/events/${event.admin_url}`;
-        res.redirect(adminPage);
-      })
-      // if inserting options was UNSUCCESSFUL, display error message
-      .catch(err => console.log(err));
-  });
-
-
-
-  router.get('/events/:event_id/thanks', (req, res) => {
-    //res.render('thanks',req.params.event_id);
-    res.render('thanks');
-  });
-
+    updateFormData(knex, user, event, formValues).then(ids => {
+      console.log(ids);
+    }).catch(err => {
+      console.log(err);
+    });
+  })
 
   return router;
 }
