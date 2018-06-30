@@ -26,9 +26,11 @@ module.exports = knex => {
 
     const checkExistingEvent = (knex, event_id) => {
       return new Promise((resolve, reject) => {
-        knex.select('*').from('events')
+        knex.select('*').from('options')
+        .join('events', 'options.event_id', 'events.id')
+        .join('users', 'events.creator_id', 'users.id')
           .where(function () {
-            this.where('admin_url', event_id).orWhere('poll_url', event_id)
+            this.where('events.admin_url', event_id).orWhere('events.poll_url', event_id)
           })
           .then(eventRecord => {
             resolve(eventRecord);

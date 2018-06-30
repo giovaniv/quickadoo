@@ -1,18 +1,38 @@
 $(() => {
   validateForm();
 
-  $('form .copy').on('click', function () {
-    // option section
-    const $optionSection = $('.option');
-    // each option div
-    const $eachOption = $(this).parents().eq(3);
-    $eachOption.clone(true, true).appendTo($optionSection);
-  })
+  activateBtns.activateCopyBtn();
+  activateBtns.activateDeleteBtn();
 
-  $('form .delete').on('click', function () {
-    const $currentOption = $(this).parents().eq(3);
-    $currentOption.remove();
-  })
+
+
+  // let editable = false;
+  // $('input[value="PREVIEW"]').click(function (e) {
+  //   e.preventDefault();
+
+  //   // remove all default icons
+  //   $(".material-icons").toggle();
+  //   // display checkbox
+  //   $(".right-icon input").toggle();
+  //   // display vote counter
+  //   $("#counter").toggle();
+  //   // display thumbs up icon
+  //   $(".fas.fa-thumbs-up").toggle();
+
+  //   $('input[value="SUBMIT"]').slideToggle("fast");
+  //   if (editable === false) {
+  //     $('.form-control').attr('readonly', true);
+  //     editable = true;
+  //   } else {
+  //     $('.form-control').attr('readonly', false);
+  //     editable = false;
+  //   };
+  // })
+
+
+
+
+
 
   $('#event-form').on('submit', function (event) {
     event.preventDefault();
@@ -49,22 +69,5 @@ $(() => {
   })
 
 
-  let editable = false;
 
-  $('input[value="PREVIEW"]').click(function (e) {
-    e.preventDefault();
-    $(".material-icons").toggle();
-    $(".left-icon").toggle();
-    $(".fas.fa-thumbs-up").toggle();
-    $("#counter").toggle();
-    $(".right-icon input").toggle();
-    $('input[value="CREATE"]').slideToggle("slow");
-    if (editable === false) {
-      $('.form-control').attr('readonly', true);
-      editable = true;
-    } else {
-      $('.form-control').attr('readonly', false);
-      editable = false;
-    };
-  })
 });

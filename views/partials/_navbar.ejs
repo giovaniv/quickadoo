@@ -2,5 +2,9 @@
   <a class="navbar-brand" href="#">
     <img src="/images/logo.png" alt="quickadoo_logo">
   </a>
-  <span></span>
+  <span>
+    <% if(locals.admin_url){ %>
+      <%= admin_url %>
+        <% } %>
+  </span>
 </nav>
