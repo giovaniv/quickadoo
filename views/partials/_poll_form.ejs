@@ -10,15 +10,16 @@ let atendee_last_name;
 let atendee_email;
 let atendee_id;
 
-//console.log(poll);
 if (locals.atendee) {
-  //console.log(atendee);
   atendee_first_name = locals.atendee.first_name;
   atendee_last_name = locals.atendee.last_name;
   atendee_email = locals.atendee.email;
   atendee_id = locals.atendee.id;
 }
-console.log(atendee_first_name, atendee_last_name, atendee_email, atendee_id);
+
+// TOTAL OF VOTES BY EACH OPTIONS OF THE EVENT
+let totals = poll.voterCounts;
+console.log(totals);
 %>
 
 <!-- ////////////////////////// -->
@@ -52,21 +53,27 @@ function myFunction() {
 
   <form action="/events/<%=poll_url%>/vote" method="POST">
 
+  <% if (locals.message) { %>
+    <div class="alert alert-danger">
+      <%=locals.message%>
+    </div>
+  <% }%>
+
     <!-- Current voter information -->
   <div class="container align-items-center justify-content-center">
     <table class="table shadow">
       <thead>
         <tr>
+          <th scope="col" class="table-success">E-mail</th>
           <th scope="col" class="table-success">First name</th>
           <th scope="col" class="table-success">Last name</th>
-          <th scope="col" class="table-success">Email</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td><input type=text name="voter_first_name" placeholder="First name" value="<%=atendee_first_name%>"></td>
-          <td><input type=text name="voter_last_name" placeholder="Last name" value="<%=atendee_last_name%>"></td>
-          <td><input type=email name="voter_email" placeholder="E-mail" value="<%=atendee_email%>"></td>
+          <td><input type=email name="voter_email" placeholder="E-mail"></td>
+          <td><input type=text name="voter_first_name" placeholder="First name"></td>
+          <td><input type=text name="voter_last_name" placeholder="Last name"></td>
         </tr>
       </tbody>
     </table>
@@ -96,7 +103,13 @@ function myFunction() {
         <td><%=option_name%></td>
         <td><%=start_time%></td>
         <td><%=start_time%></td>
-        <td>SW, BK, GV and +7</td>
+        <td><%
+          totals.forEach(function(x){
+            if (option_id === x.option_id) { %>
+              <%=x.count%>
+            <%}
+          })
+        %></td>
       </tr>
       <% } %>
     </tbody>

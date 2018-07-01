@@ -23,7 +23,7 @@ module.exports = knex => {
   router.get('/events/:url', (req, res) => {
     // use url to see if there is a corresponding event saved in psql
     const { url } = req.params;
-
+    
     const getEventId = (knex, url) => {
       return new Promise((resolve, reject) => {
         knex.select('id').from('events')
@@ -141,32 +141,44 @@ module.exports = knex => {
   // ==================================================
   // Start of change by Giovani
   // ==================================================
-  router.post('/atendees', (req, res) => {
+
+  //check if email exists and if exists, returns voters info
+  router.post('/voters', (req, res) => {
     const email = req.body.email;
-    const poll = req.body.poll;
     knex.raw('select * from users where email = ?',email)
     .then(function(result){
       if (result.rowCount) {
-        // const id = result.rows[0].id;
-        //res.status(200).render('poll',{ poll: JSON.parse(poll), atendee: result.rows[0] });
-        res.status(200).send({
-          poll: JSON.parse(poll),
-          atendee: result.rows[0]
+        knex.raw('select * from option_voters where person_id = ?',result.rows[0].id)
+        .then(function(lines) {
+          let myOptions = [];
+          for (let i=0; i<lines.rows.length; i++) {
+            myOptions.push(lines.rows[i].option_id);
+          }
+          res.status(200).send({
+            attendee: result.rows[0],
+            options: myOptions
+          });
         });
       }
     });
   });
 
   router.post('/events/:event_id/vote', (req, res) => {
- 
+
     // fields that we need
-    //console.log(req.body);
     let event_id = req.body.event_id;
     let person_id = req.body.person_id;
     let voter_first_name = req.body.voter_first_name;
     let voter_last_name = req.body.voter_last_name;
     let voter_email = req.body.voter_email;
     let poll_url = req.body.poll_url;
+    let poll_info = req.body.poll_info;
+    let path = "/events/" + poll_url;
+
+    // check if the fields have some value
+    if (!voter_email || !voter_first_name || !voter_last_name) {
+      res.status(302).render('poll',{ poll: JSON.parse(poll_info), message: 'Please fill your e-mail and name' });
+    }
 
     // function to filter keys in a object and return the values of this filter
     let filterValues = (obj, filter) => {
@@ -193,11 +205,23 @@ module.exports = knex => {
 
       // 1.1 - If user not exists, insert user and user votes
       if (!result.rowCount) {
-        const myQuery = `insert into users (first_name, last_name, email) `;
-        myQuery += `values (${voter_first_name},${voter_last_name},${voter_email})`;
-        knex.raw(myQuery)
+        let myData = {
+          first_name: voter_first_name,
+          last_name: voter_last_name,
+          email: voter_email
+        }
+        knex('users')
+        .returning('id')
+        .insert(myData)
         .then(function(result){
-          console.log(result);
+          let myID = result[0];
+          // new options
+          filteredOptions.forEach(function(option) {
+            knex.raw(`insert into option_voters (option_id, person_id) values (${option},${myID})`)
+            .catch(function(err){
+              console.log(err);
+            })
+          });
         })
         .catch(function(err){
           console.log(err);
@@ -217,9 +241,10 @@ module.exports = knex => {
           })
         });
       }
-      // 2 - redirect to the same place
-      let path = "/events/" + poll_url;
-      res.status(302).redirect(path);
+
+      // 2 - redirect to the thanks page
+      res.status(200).render('thanks',{ url:poll_url });
+
     });
 
     return;

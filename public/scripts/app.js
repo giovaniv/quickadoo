@@ -30,15 +30,24 @@ $(() => {
 
   $('input[name="voter_email"]').blur(function () {
     let email = $(this).val();
-    let poll = $('input[name="poll_info"]').val();
-    $.ajax('/atendees', {
+    $.ajax('/voters', {
       method: 'POST',
-      data: { 'email':email, 'poll':poll }
-    }).done(function(poll, atendee) {
-      console.log(poll);
-      console.log(atendee);
-      console.log('redirect to the correct page');
-      //$(document).load("poll.ejs", { poll, atendee });
+      data: { 'email':email }
+    }).done(function(resp) {
+      let user = resp.attendee;
+      let options = resp.options;
+      $('input[name="voter_first_name"]').val(user.first_name);
+      $('input[name="voter_last_name"]').val(user.last_name);
+      $('input[type=checkbox]').each(function() {
+          let chk_value = $(this).val();
+          for ( let i = 0; i < options.length; i++) {
+            if (chk_value == options[i]) {
+              $(this).attr('checked',true);
+            }
+          }
+      });
+
+      return;
     })
   });
 
