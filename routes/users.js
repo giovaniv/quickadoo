@@ -2,6 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const { updateFormData, generateRandomString, capitaliseFirstLetter } = require('../libs/query-helpers');
+const { createPoll } = require('../libs/create_table');
 
 module.exports = knex => {
   // root. redirect to /home with http status of 302
@@ -49,10 +50,9 @@ module.exports = knex => {
     getEventRecord(knex, event_id)
       .then(formData => {
         if(event_id === formData[0].admin_url){
-          res.status(200).render('admin',formData);
+          res.status(200).render('admin',{ poll: formData });
         }else{
-          console.log(formData);
-          res.status(200).render('poll',formData);
+          res.status(200).render('poll',{ poll: formData });
         }
       })
       .catch(err => {

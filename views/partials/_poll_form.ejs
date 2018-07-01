@@ -1,56 +1,64 @@
-<div class="container">
-  <h1><strong>Movie Night</strong></h1>
-  <h3>Let's head to the theaters!</h3>
-  <p>By: Alice Wonder</p>
-  <p>Created at: 30/06/2018 at 12:00</p>
-</div>
+<%
+// user information
+let first_name = poll[0].first_name;
+let last_name = poll[0].last_name;
+let created_at = poll[0].created_at;
 
-<table class="table table-bordered shadow">
-  <thead>
-    <tr>
-      <th scope="col" class="table-success">&nbsp;</th>
-      <th scope="col" class="table-success">Option</th>
-      <th scope="col" class="table-success">Date</th>
-      <th scope="col" class="table-success">Time</th>
-      <th scope="col" class="table-success">Attendees</th>
-      <th scope="col" class="table-success">Any comment?</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row" class="text-left">
-        <input type="checkbox" name="option1">
-      </th>
-      <td>Jurassic Park</td>
-      <td>02-07-2018</td>
-      <td>19:00</td>
-      <td>SW, BK, GV and +7</td>
-      <td><input type=text name="note1"></td>
-    </tr>
-    <tr>
-      <th scope="row" class="text-left">
-        <input type="checkbox" name="option2">
-        <i class="fas fa-thumbs-up"></i>
-      </th>
-      <td>Titanic 2</td>
-      <td>03-07-2018</td>
-      <td>19:00</td>
-      <td>SW, BK, GV and +17</td>
-      <td><input type=text name="note2"></td>
-    </tr>
-    <tr>
-      <th scope="row" class="text-left">
-        <input type="checkbox" name="option3">
-      </th>
-      <td>Avengers</td>
-      <td>04-07-2018</td>
-      <td>19:00</td>
-      <td>SW, BK and GV</td>
-      <td><input type=text name="note3"></td>
-    </tr>
-  </tbody>
-</table>
+// event information
+let event_title = poll[0].title;
+let description = poll[0].description;
+%>
 
-<input type="submit" id="sendVote" class="btn btn-primary" value='VOTE'>
+  <div class="container">
+    <h1>
+      <strong>
+        <%=event_title %>
+      </strong>
+    </h1>
+    <h3>
+      <%=description%>
+    </h3>
+    <p>
+      <% first_name + last_name %>
+    </p>
+    <p>
+      <%=created_at %>
+    </p>
+  </div>
+  <form action="">
+  <table class="table table-bordered shadow">
+    <thead>
+      <tr>
+        <th scope="col" class="table-success">&nbsp;</th>
+        <th scope="col" class="table-success">Option</th>
+        <th scope="col" class="table-success">Date</th>
+        <th scope="col" class="table-success">Time</th>
+        <th scope="col" class="table-success">Attendees</th>
+        <th scope="col" class="table-success">Any comment?</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for (let i = 0; i < poll.length; i++) {
+        let option_name = poll[i].name;
+        let start_time = poll[i].start_time;
+        let noteName = "note" + i;
+      %>
+      <tr>
+        <th scope="row" class="text-left">
+          <input type="checkbox" name="option1">
+        </th>
+        <td><%=option_name%></td>
+        <td><%=start_time%></td>
+        <td><%=start_time%></td>
+        <td>SW, BK, GV and +7</td>
+        <td>
+          <input type=text name="<%=noteName%>">
+        </td>
+      </tr>
+      <% } %>
+    </tbody>
+  </table>
+  </form>
+  <input type="submit" id="sendVote" class="btn btn-primary" value='VOTE'>
 
-<p></p>
+  <p></p>
