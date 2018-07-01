@@ -1,29 +1,36 @@
-# Node Skeleton
+# Quickadoo
+## Plan your day with Quickadoo
 
-## Project Setup
+Quickadoo is a simple and fast Doodle clone.
 
-1. Create your own empty repo on GitHub
-2. Clone this repository (do not fork)
-  - Suggestion: When cloning, specify a different folder name that is relevant to your project
-3. Remove the git remote: `git remote rm origin`
-4. Add a remote for your origin: `git remote add origin <your github repo URL>`
-5. Push to the new origin: `git push -u origin master`
-6. Verify that the skeleton code now shows up in your repo on GitHub
+This project is meant to for bootcamp students to combine front and back and skills learned during the first half of the bootcamp and interact with a Postgress database.
 
-## Getting Started
+This project utilizes HTML, CSS, JS, EJS, jQuery and AJAX on the front-end skills; as well as, Node, Express, knex and PSQL on the back-end skills.
 
-1. Create the `.env` by using `.env.example` as a reference: `cp .env.example .env`
-2. Update the .env file with your correct local information
-3. Install dependencies: `npm i`
-4. Fix to binaries for sass: `npm rebuild node-sass`
-5. Run migrations: `npm run knex migrate:latest`
-  - Check the migrations folder to see what gets created in the DB
-6. Run the seed: `npm run knex seed:run`
-  - Check the seeds file to see what gets seeded in the DB
-7. Run the server: `npm run local`
-8. Visit `http://localhost:8080/`
 
 ## Dependencies
 
+- Express
+- EJS
 - Node 5.10.x or above
-- NPM 3.8.x or above
+- body-parser
+- dotenv
+- knex
+- knex-logger
+- method-override
+- morgan
+- node-sass-middleware
+- pg 6.0.2 or above
+
+## Final Product
+
+!["Landing Page"](https://github.com/Wisara8/quickadoo/blob/master/docs/Landing%20Page.png?raw=true)
+!["Create Event Page"](https://github.com/Wisara8/quickadoo/blob/master/docs/Event%20Form.png?raw=true)
+<!-- !["Poll Page"]() -->
+!["Poll Page wtih Votes"](https://github.com/Wisara8/quickadoo/blob/master/docs/Poll%20Page%20with%20Votes.png?raw=true)
+<!-- !["Thanks for Voting!"]() -->
+
+## Getting Started
+
+-Install all dependencies (using the `npm install` command).
+-Run the web server using the `npm run local` command.
