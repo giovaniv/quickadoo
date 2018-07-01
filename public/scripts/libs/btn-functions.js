@@ -1,21 +1,30 @@
-// construct the next option id. if the current option id is option-1, then the next id is option-2
-const makeNextOptionId = $cloner => {
-  const $currentIdNum = Number($cloner.attr('id').split('-')[1]);
-  return `option-${$currentIdNum + 1}`;
+const getNextIdNumber = ($parentDiv, delim) => {
+  const idArray = [];
+  $parentDiv.children().each(function (index) {
+    const childrenId = Number($(this).attr('id').split(delim)[1]);
+    idArray.push(childrenId);
+  })
+  return Math.max(...idArray);
 };
 
 // appends a clone of your selected option div to its parent div
-const activateCopyBtn = () => {
+const activateCopyBtn = datetimePickerConfig => {
   $('form .copy').on('click', function () {
+    // destroy datetimepicker (IMPORTANT! this must occur before inserting the clone)
+    $('form .datetimepickers').datetimepicker('destroy');
+
     // parent option div
     const $optionSection = $('.option');
     // each option div (child)
     const $eachOption = $(this).parents().eq(3);
     // create a cloner
     const $cloner = $eachOption.clone(true, true);
+    const nextOptionId = `option-${getNextIdNumber($optionSection, '-') + 1}`;
     // assign your new id to the cloner and insert it
-    $cloner.attr('id', makeNextOptionId($cloner));
-    $cloner.insertAfter($optionSection);
+    $cloner.attr('id', nextOptionId).insertAfter($eachOption);
+
+    // configure the datetimepicker again
+    $('.datetimepickers').datetimepicker(datetimePickerConfig);
   });
 };
 
