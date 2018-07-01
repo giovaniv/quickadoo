@@ -10,6 +10,9 @@ const getNextIdNumber = ($parentDiv, delim) => {
 // appends a clone of your selected option div to its parent div
 const activateCopyBtn = datetimePickerConfig => {
   $('form .copy').on('click', function () {
+    //  Reference to how to avoid cloned calendar to execute its original calendar
+    // https://stackoverflow.com/questions/17331137/how-can-i-get-jquery-datepicker-to-work-on-cloned-rows
+
     // destroy datetimepicker (IMPORTANT! this must occur before inserting the clone)
     $('form .datetimepickers').datetimepicker('destroy');
 
