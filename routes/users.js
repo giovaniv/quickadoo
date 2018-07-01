@@ -1,7 +1,7 @@
 'use strict';
 const express = require('express');
 const router = express.Router();
-const { updateFormData, generateRandomString, capitaliseFirstLetter } = require('../libs/query-helpers');
+const { getEventRecord, updateFormData, generateRandomString, capitaliseFirstLetter } = require('../libs/query-helpers');
 
 module.exports = knex => {
   // root. redirect to /home with http status of 302
