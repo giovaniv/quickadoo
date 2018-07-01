@@ -1,4 +1,5 @@
 <%
+console.log(poll[0]);
 // user information
 let first_name = poll[0].first_name;
 let last_name = poll[0].last_name;
@@ -7,25 +8,61 @@ let created_at = poll[0].created_at;
 // event information
 let event_title = poll[0].title;
 let description = poll[0].description;
+let admin_url = poll[0].admin_url;
+let poll_url = poll[0].poll_url;
 %>
 
+<!-- ////////////////////////// -->
+<!-- We need the option ID and Count(*) group by option_voters to use here -->
+<!-- option ID to be used at checkbox to update it always -->
+<!-- count(*) group by option_voters to show in the poll page -->
+<!-- ////////////////////////// -->
+
+<script>
+function myFunction() {
+  /* Get the text field */
+  var copyText = document.getElementById("myInput");
+  /* Select the text field */
+  copyText.select();
+  /* Copy the text inside the text field */
+  document.execCommand("copy");
+}
+</script>
+
+  <!-- Title information -->
   <div class="container">
-    <h1>
-      <strong>
-        <%=event_title %>
-      </strong>
-    </h1>
-    <h3>
-      <%=description%>
-    </h3>
+    <h1><%=event_title %></h1>
+    <p><%=description%></p>
+    <p><% first_name + last_name %></p>
+    <p><%=created_at %></p>
     <p>
-      <% first_name + last_name %>
-    </p>
-    <p>
-      <%=created_at %>
+      <input type="text" value="localhost:8080/events/<%=poll_url %>" id="myInput" size=40 readonly>
+      <button onclick="myFunction()">Copy text</button>
     </p>
   </div>
-  <form action="">
+
+  <form action="/events/<%=poll_url%>/vote" method="POST">
+
+    <!-- Current voter information -->
+  <div class="container align-items-center justify-content-center">
+    <table class="table shadow">
+      <thead>
+        <tr>
+          <th scope="col" class="table-success">First name</th>
+          <th scope="col" class="table-success">Last name</th>
+          <th scope="col" class="table-success">Email</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input type=text name="voter_first_name" placeholder="First name"></td>
+          <td><input type=text name="voter_last_name" placeholder="Last name"></td>
+          <td><input type=email name="voter_email" placeholder="E-mail"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
   <table class="table table-bordered shadow">
     <thead>
       <tr>
@@ -34,31 +71,26 @@ let description = poll[0].description;
         <th scope="col" class="table-success">Date</th>
         <th scope="col" class="table-success">Time</th>
         <th scope="col" class="table-success">Attendees</th>
-        <th scope="col" class="table-success">Any comment?</th>
       </tr>
     </thead>
     <tbody>
       <% for (let i = 0; i < poll.length; i++) {
         let option_name = poll[i].name;
         let start_time = poll[i].start_time;
-        let noteName = "note" + i;
+        let chkOption = "option" + i;
       %>
       <tr>
         <th scope="row" class="text-left">
-          <input type="checkbox" name="option1">
+          <input type="checkbox" name="<%=chkOption%>">
         </th>
         <td><%=option_name%></td>
         <td><%=start_time%></td>
         <td><%=start_time%></td>
         <td>SW, BK, GV and +7</td>
-        <td>
-          <input type=text name="<%=noteName%>">
-        </td>
       </tr>
       <% } %>
     </tbody>
-  </table>
-  </form>
+  </table> 
   <input type="submit" id="sendVote" class="btn btn-primary" value='VOTE'>
-
+  </form>
   <p></p>

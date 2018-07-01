@@ -122,5 +122,26 @@ module.exports = knex => {
     });
   })
 
+
+  // ==================================================
+  // Start of change by Giovani
+  // ==================================================
+  router.post('/events/:event_id/vote', (req, res) => {
+    console.log(req);
+    let voter_first_name = req.body.voter_first_name;
+    let voter_last_name = req.body.voter_last_name;
+    let voter_email = req.body.email;
+    // body:
+    // { voter_first_name: 'Sam',
+    //   voter_last_name: 'Giovani',
+    //   voter_email: 'test@gmail.com',
+    //   option0: 'on',
+    //   option2: 'on' },
+    return;
+  });
+  // ==================================================
+  // End of change by Giovani
+  // ==================================================
+
   return router;
 }
