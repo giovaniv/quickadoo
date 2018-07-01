@@ -8,16 +8,16 @@
   </article>
   <% if(locals.formData){ %>
     <article class='alert alert-success nav-alert-wrapper' role='alert'>
-      <h1>Success! Invite your friends via...</h1>
+      <h4>Success! Invite your friends via...</h4>
       <div class="input-group">
         <span class="input-group-addon">
           <i class="material-icons">file_copy</i>
         </span>
         <input type="text" readonly class="form-control" value='<%= `https://localhost:8080/${formData[0].poll_url}` %>' />
       </div>
-      <!-- <div style='display: inline-block;' class='alert alert-danger' role='alert'>
-        <%=` Admin Page: https://localhost:8080/${formData[0].admin_url}` %>
-      </div> -->
     </article>
+    <span class="alert alert-danger" role="alert">
+      <%= `Admin URL: https://localhost:8080/${formData[0].admin_url}` %>
+    </span>
     <% } %>
 </section>
