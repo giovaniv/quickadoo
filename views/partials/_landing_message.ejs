@@ -3,8 +3,14 @@
     <h1>Plan your day with
       <img src="/images/logo.png" alt="quickadoo_logo">
     </h1>
-    <h5>The Quicker, easier solution to schedule events with your friends. Create polls instantly and efficiently!</h5>
-  </main>
+    <% if (!locals.message) { %>
+      <h5>The Quicker, easier solution to schedule events with your friends. Create polls instantly and efficiently!</h5>
+    <% } else { %>
+      <div class="alert alert-danger">
+        <%=locals.message%>
+      </div>
+    <% }%>
+    </main>
   <footer>
     <a href='/events' class="btn btn-success btn-lg">CLICK TO START!</a>
   </footer>

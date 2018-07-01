@@ -137,5 +137,20 @@ module.exports = knex => {
     });
   })
 
+
+  // ==================================================
+  // Start of change by Giovani
+  // ==================================================
+  router.post('/events/:event_id/vote', (req, res) => {
+    console.log(req.body);
+    let voter_first_name = req.body.voter_first_name;
+    let voter_last_name = req.body.voter_last_name;
+    let voter_email = req.body.email;
+    return;
+  });
+  // ==================================================
+  // End of change by Giovani
+  // ==================================================
+
   return router;
 }
