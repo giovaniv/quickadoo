@@ -1,19 +1,18 @@
-jQuery.datetimepicker.setLocale('en');
+const dtPickerConfig = {
+  minDate: 0,
+  todayButton: true,
+  format: 'D, M j, Y g:i A T',
+  step: 15
+};
 
-jQuery('#datetimepicker').datetimepicker({
-  i18n:{
-   en:{
-    months:[
-     'January','February','Mars','April',
-     'May','Jun', 'July','August',
-     'September','October','November','Deember',
-    ],
-    dayOfWeek:[
-     "Su.", "Mo", "Tues", "Wed",
-     "Thurs", "Fri", "Sat",
-    ]
-   }
-  },
-  timepicker:false,
-  format:'d.m.Y'
- });
+const activateCalendar = () => {
+  $('form .datetimepickers').datetimepicker(dtPickerConfig);
+  $('input.datetimepickers').on('click', function(){
+    $(this).datetimepicker(dtPickerConfig);
+  })
+};
+
+window.makeCalendar = {
+  dtPickerConfig,
+  activateCalendar
+};

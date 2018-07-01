@@ -56,10 +56,11 @@ module.exports = knex => {
     const event = {
       title,
       description,
-      created_at: new Date(),
+      created_at: new Date(Date.now()),
       admin_url: generateRandomString(7),
       poll_url: generateRandomString(7)
     };
+
 
     // update form data to appropriate tables
     updateFormData(knex, user, event, formValues).then(ids => {
