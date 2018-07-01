@@ -5,28 +5,9 @@ const {first_name, last_name, created_at, id} = poll.eventRecord[0];
 // event information
 const {title, description, poll_url, event_id} = poll.eventRecord[0];
 
-let atendee_first_name;
-let atendee_last_name;
-let atendee_email;
-let atendee_id;
-
-if (locals.atendee) {
-  atendee_first_name = locals.atendee.first_name;
-  atendee_last_name = locals.atendee.last_name;
-  atendee_email = locals.atendee.email;
-  atendee_id = locals.atendee.id;
-}
-
 // TOTAL OF VOTES BY EACH OPTIONS OF THE EVENT
 let totals = poll.voterCounts;
-console.log(totals);
 %>
-
-<!-- ////////////////////////// -->
-<!-- We need the option ID and Count(*) group by option_voters to use here -->
-<!-- option ID to be used at checkbox to update it always -->
-<!-- count(*) group by option_voters to show in the poll page -->
-<!-- ////////////////////////// -->
 
 <script>
 function myFunction() {
