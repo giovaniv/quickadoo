@@ -26,9 +26,9 @@ This project utilizes HTML, CSS, JS, EJS, jQuery and AJAX on the front-end skill
 
 !["Landing Page"]()
 !["Create Event Page"]()
-!["Poll Page"]()
+<!-- !["Poll Page"]() -->
 !["Poll Page wtih Votes"]()
-!["Thanks for Voting!"]()
+<!-- !["Thanks for Voting!"]() -->
 
 ## Getting Started
 
