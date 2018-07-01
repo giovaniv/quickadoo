@@ -142,13 +142,25 @@ module.exports = knex => {
   // Start of change by Giovani
   // ==================================================
   router.post('/events/:event_id/vote', (req, res) => {
-    //console.log(req.body);
+ 
     let event_id = req.body.event_id;
     let person_id = req.body.person_id;
     let voter_first_name = req.body.voter_first_name;
     let voter_last_name = req.body.voter_last_name;
     let voter_email = req.body.voter_email;
-    console.log(event_id, person_id, voter_first_name, voter_last_name, voter_email);
+    //console.log(event_id, person_id, voter_first_name, voter_last_name, voter_email);
+
+    let filtered_keys = (obj, filter) => {
+      let key, keys = []
+      for (key in obj)
+        if (obj.hasOwnProperty(key) && filter.test(key))
+          keys.push(obj[key])
+      return keys
+    }
+    
+    // example:
+    let filteredOptions = filtered_keys(req.body, /option/);
+
     return;
 
     // 1 - check if the user exists
