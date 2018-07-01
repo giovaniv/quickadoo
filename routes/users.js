@@ -79,12 +79,12 @@ module.exports = knex => {
 
     getEventRecord(knex, url)
       .then(stats => {
-        console.log(stats);
+        //console.log(stats);
         if (url === stats.eventRecord[0].admin_url) {
-          console.log('render admin page');
+          //console.log('render admin page');
           res.status(200).render('event', { formData: stats.eventRecord });
         } else {
-          console.log('poll');
+          //console.log('poll');
           res.status(200).render('poll', { poll: stats });
         }
       })
@@ -149,6 +149,7 @@ module.exports = knex => {
     let voter_last_name = req.body.voter_last_name;
     let voter_email = req.body.voter_email;
     console.log(event_id, person_id, voter_first_name, voter_last_name, voter_email);
+    return;
 
     // 1 - check if the user exists
     // 1.1 - If exists, delete all options in option_voters table
@@ -169,7 +170,6 @@ module.exports = knex => {
     //   });
     // });
 
-    return;
   });
   // ==================================================
   // End of change by Giovani
