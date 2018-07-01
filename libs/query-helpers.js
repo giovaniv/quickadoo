@@ -1,3 +1,59 @@
+// get event_id corresponding to the given url
+const getEventId = (knex, url) => {
+  return new Promise((resolve, reject) => {
+    knex.select('id').from('events')
+      .where(function () {
+        this.where('events.admin_url', url).orWhere('events.poll_url', url)
+      }).then(eventId => {
+        if (eventId.length) {
+          resolve(eventId[0].id);
+        } else {
+          reject('no event_id found!');
+        }
+      })
+  })
+}
+
+// check if there is any event corresponding to url
+// if there is any, return the result
+const checkExistingEvent = (knex, url) => {
+  return new Promise((resolve, reject) => {
+    knex.select('*', 'options.id as option_id').from('options')
+      .join('events', 'options.event_id', 'events.id')
+      .join('users', 'events.creator_id', 'users.id')
+      .where(function () {
+        this.where('events.admin_url', url).orWhere('events.poll_url', url)
+      })
+      .then(eventRecord => {
+        if (eventRecord.length) {
+          resolve(eventRecord);
+        } else {
+          reject('no url found!');
+        }
+      })
+  })
+};
+
+// count the number of votes for each option
+const countVoters = (knex, event_id) => {
+  return new Promise((resolve, reject) => {
+    knex.raw(`select option_id, count(person_id) from
+        (select id from options where event_id = ${event_id}) as tb1
+        join option_voters on tb1.id = option_voters.option_id group by option_id;`)
+      .then(result => {
+        resolve(result.rows);
+      })
+  })
+}
+
+// return event record and the number of votes for the event options
+async function getEventRecord(knex, url) {
+  const event_id = await getEventId(knex, url);
+  const eventRecord = await checkExistingEvent(knex, url);
+  const voterCounts = await countVoters(knex, event_id);
+  return { eventRecord, voterCounts };
+}
+
 // calculate how many options were returned
 const calculateOptionLen = (options, fields) => (Object.keys(options).length - 5) / fields.length;
 
@@ -95,6 +151,7 @@ async function updateFormData(knex, userObj, eventObj, optionForm) {
 }
 
 module.exports = {
+  getEventRecord,
   updateFormData,
   generateRandomString,
   capitaliseFirstLetter
