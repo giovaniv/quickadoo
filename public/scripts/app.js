@@ -28,4 +28,18 @@ $(() => {
   });
 
 
+  $('input[name="voter_email"]').blur(function () {
+    let email = $(this).val();
+    let poll = $('input[name="poll_info"]').val();
+    $.ajax('/atendees', {
+      method: 'POST',
+      data: { 'email':email, 'poll':poll }
+    }).done(function(poll, atendee) {
+      console.log(poll);
+      console.log(atendee);
+      console.log('redirect to the correct page');
+      //$(document).load("poll.ejs", { poll, atendee });
+    })
+  });
+
 });

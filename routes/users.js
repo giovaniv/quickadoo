@@ -141,16 +141,35 @@ module.exports = knex => {
   // ==================================================
   // Start of change by Giovani
   // ==================================================
+  router.post('/atendees', (req, res) => {
+    const email = req.body.email;
+    const poll = req.body.poll;
+    knex.raw('select * from users where email = ?',email)
+    .then(function(result){
+      if (result.rowCount) {
+        // const id = result.rows[0].id;
+        //res.status(200).render('poll',{ poll: JSON.parse(poll), atendee: result.rows[0] });
+        res.status(200).send({
+          poll: JSON.parse(poll),
+          atendee: result.rows[0]
+        });
+      }
+    });
+  });
+
   router.post('/events/:event_id/vote', (req, res) => {
  
+    // fields that we need
+    //console.log(req.body);
     let event_id = req.body.event_id;
     let person_id = req.body.person_id;
     let voter_first_name = req.body.voter_first_name;
     let voter_last_name = req.body.voter_last_name;
     let voter_email = req.body.voter_email;
-    //console.log(event_id, person_id, voter_first_name, voter_last_name, voter_email);
+    let poll_url = req.body.poll_url;
 
-    let filtered_keys = (obj, filter) => {
+    // function to filter keys in a object and return the values of this filter
+    let filterValues = (obj, filter) => {
       let key, keys = []
       for (key in obj)
         if (obj.hasOwnProperty(key) && filter.test(key))
@@ -158,29 +177,52 @@ module.exports = knex => {
       return keys
     }
     
-    // example:
-    let filteredOptions = filtered_keys(req.body, /option/);
+    // we filter all the keys 'option?' where ? is any number
+    // and we return all the options_id that the user selected
+    let filteredOptions = filterValues(req.body, /option/);
 
-    return;
 
     // 1 - check if the user exists
-    // 1.1 - If exists, delete all options in option_voters table
-    // 1.1.1 - Insert the new options of this user
-    // 1.2 - If user not exists, insert user and options
+    // 1.1 - If user not exists, insert user and user votes
+    // 1.2 - If user exists, delete all user votes and insert the new votes again
     // 2 - redirect to the same place
 
-    // //We delete all options that this user voted and
-    // //after that we insert the new votes from him
-    // //and after that we redirect to the same page
-    // knex('option_voters')
-    // .where('person_id', 13)
-    // .del().then(function(){
-    //   knex.insert({option_id:1, person_id:15})
-    //   .into('option_voters')
-    //   .then(function(){
+    // 1 - check if the user exists
+    knex.raw('select * from users where email = ?',voter_email)
+    .then(function(result){
 
-    //   });
-    // });
+      // 1.1 - If user not exists, insert user and user votes
+      if (!result.rowCount) {
+        const myQuery = `insert into users (first_name, last_name, email) `;
+        myQuery += `values (${voter_first_name},${voter_last_name},${voter_email})`;
+        knex.raw(myQuery)
+        .then(function(result){
+          console.log(result);
+        })
+        .catch(function(err){
+          console.log(err);
+        })
+      } else {
+        // 1.2 - If user exists, delete all user votes and insert the new votes again
+        const id = result.rows[0].id;
+        knex('option_voters').where('person_id',id).del()
+        .catch(function(err){
+          console.log(err);
+        })
+        // new options
+        filteredOptions.forEach(function(option) {
+          knex.raw(`insert into option_voters (option_id, person_id) values (${option},${id})`)
+          .catch(function(err){
+            console.log(err);
+          })
+        });
+      }
+      // 2 - redirect to the same place
+      let path = "/events/" + poll_url;
+      res.status(302).redirect(path);
+    });
+
+    return;
 
   });
   // ==================================================

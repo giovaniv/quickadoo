@@ -1,12 +1,24 @@
 <%
-console.log(poll);
-
 // user information
 const {first_name, last_name, created_at, id} = poll.eventRecord[0];
 
 // event information
 const {title, description, poll_url, event_id} = poll.eventRecord[0];
 
+let atendee_first_name;
+let atendee_last_name;
+let atendee_email;
+let atendee_id;
+
+//console.log(poll);
+if (locals.atendee) {
+  //console.log(atendee);
+  atendee_first_name = locals.atendee.first_name;
+  atendee_last_name = locals.atendee.last_name;
+  atendee_email = locals.atendee.email;
+  atendee_id = locals.atendee.id;
+}
+console.log(atendee_first_name, atendee_last_name, atendee_email, atendee_id);
 %>
 
 <!-- ////////////////////////// -->
@@ -52,9 +64,9 @@ function myFunction() {
       </thead>
       <tbody>
         <tr>
-          <td><input type=text name="voter_first_name" placeholder="First name"></td>
-          <td><input type=text name="voter_last_name" placeholder="Last name"></td>
-          <td><input type=email name="voter_email" placeholder="E-mail"></td>
+          <td><input type=text name="voter_first_name" placeholder="First name" value="<%=atendee_first_name%>"></td>
+          <td><input type=text name="voter_last_name" placeholder="Last name" value="<%=atendee_last_name%>"></td>
+          <td><input type=email name="voter_email" placeholder="E-mail" value="<%=atendee_email%>"></td>
         </tr>
       </tbody>
     </table>
@@ -91,6 +103,8 @@ function myFunction() {
   </table>
   <input type=hidden name="person_id" value="<%=id%>">
   <input type=hidden name="event_id" value="<%=event_id%>">
+  <input type=hidden name="poll_url" value="<%=poll_url%>">
+  <input type=hidden name="poll_info" value="<%=JSON.stringify(poll)%>">
   <input type="submit" id="sendVote" class="btn btn-primary" value='VOTE'>
   </form>
   <p></p>
