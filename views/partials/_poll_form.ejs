@@ -1,6 +1,8 @@
 <%
 console.log(poll[0]);
 // user information
+let person_id = poll[0].id;
+let event_id = poll[0].event_id;
 let first_name = poll[0].first_name;
 let last_name = poll[0].last_name;
 let created_at = poll[0].created_at;
@@ -90,7 +92,9 @@ function myFunction() {
       </tr>
       <% } %>
     </tbody>
-  </table> 
+  </table>
+  <input type=hidden name="person_id" value="<%=person_id%>">
+  <input type=hidden name="event_id" value="<%=event_id%>">
   <input type="submit" id="sendVote" class="btn btn-primary" value='VOTE'>
   </form>
   <p></p>

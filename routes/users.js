@@ -127,10 +127,33 @@ module.exports = knex => {
   // Start of change by Giovani
   // ==================================================
   router.post('/events/:event_id/vote', (req, res) => {
-    console.log(req.body);
+    //console.log(req.body);
+    let event_id = req.body.event_id;
+    let person_id = req.body.person_id;
     let voter_first_name = req.body.voter_first_name;
     let voter_last_name = req.body.voter_last_name;
-    let voter_email = req.body.email;
+    let voter_email = req.body.voter_email;
+    console.log(event_id, person_id, voter_first_name, voter_last_name, voter_email);
+
+    // 1 - check if the user exists
+    // 1.1 - If exists, delete all options in option_voters table
+    // 1.1.1 - Insert the new options of this user
+    // 1.2 - If user not exists, insert user and options
+    // 2 - redirect to the same place
+
+    // //We delete all options that this user voted and
+    // //after that we insert the new votes from him
+    // //and after that we redirect to the same page
+    // knex('option_voters')
+    // .where('person_id', 13)
+    // .del().then(function(){
+    //   knex.insert({option_id:1, person_id:15})
+    //   .into('option_voters')
+    //   .then(function(){
+
+    //   });
+    // });
+
     return;
   });
   // ==================================================
