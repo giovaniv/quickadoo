@@ -1,34 +1,63 @@
-<div>
-  <h1>Movie Night</h1>
-  <h3>Let's head to the theaters!</h3>
-</div>
-<div>
-  <p>By: Alice Wonder</p>
-  <p>Created at: 2018.06.30 12:00</p>
-</div>
+<%
+// user information
+const {first_name, last_name, created_at} = poll.eventRecord[0];
 
-<div class="select">
-  <h3>Avengers 9:00</h3>
-  <input type="checkbox">
-  <i class="fas fa-thumbs-up"></i>
-  <p class="votes">2 Votes</p>
-  <p>C.H.</p><p>A.W.</p>
-</div>
+// event information
+const {title, description} = poll.eventRecord[0];
+%>
 
-<div class="select">
-  <h3>Avengers 10:00</h3>
-  <input type="checkbox">
-  <i class="fas fa-thumbs-up"></i>
-  <p class="votes">1 Votes</p>
-  <p>C.H.</p>
-</div>
+    <div class="container">
+      <h1>
+        <strong>
+          <%=title %>
+        </strong>
+      </h1>
+      <h3>
+        <%=description%>
+      </h3>
+      <p>
+        <% first_name + last_name %>
+      </p>
+      <p>
+        <%=created_at %>
+      </p>
+    </div>
+    <form action="">
+      <table class="table table-bordered shadow">
+        <thead>
+          <tr>
+            <th scope="col" class="table-success">&nbsp;</th>
+            <th scope="col" class="table-success">Option</th>
+            <th scope="col" class="table-success">Date</th>
+            <th scope="col" class="table-success">Time</th>
+            <th scope="col" class="table-success">Attendees</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% for (let i = 0; i < poll.eventRecord.length; i++) {
+        let {name, start_time} = poll.eventRecord[i];
+      %>
+      <%- JSON.stringify(poll.voterCounts) %>
+            <tr>
+              <th scope="row" class="text-left">
+                <input type="checkbox" name="option1">
+              </th>
+              <td>
+                <%=name%>
+              </td>
+              <td>
+                <%=start_time%>
+              </td>
+              <td>
+                <%=start_time%>
+              </td>
+              <td>SW, BK, GV and +7</td>
 
-<div class="select">
-  <h3>Titanic 2: Return of the Iceberg! 11:00</h3>
-  <input type="checkbox">
-  <i class="fas fa-thumbs-up"></i>
-  <p class="votes">103 Votes</p>
-  <p>C.H.</p><p>A.W.</p>
-</div>
+            </tr>
+            <% } %>
+        </tbody>
+      </table>
+    </form>
+    <input type="submit" id="sendVote" class="btn btn-primary" value='VOTE'>
 
-<input type="submit" id="sendVote" class="btn btn-primary" value='VOTE'>
+    <p></p>

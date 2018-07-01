@@ -5,6 +5,7 @@ const activateCopyBtn = () => {
     // each option div
     const $eachOption = $(this).parents().eq(3);
     $eachOption.clone(true, true).appendTo($optionSection);
+    $eachOption.unbind('click');
   })
 };
 

@@ -13,11 +13,11 @@
         <span class="input-group-addon">
           <i class="material-icons">file_copy</i>
         </span>
-        <input type="text" readonly class="form-control" value='<%= `https://localhost:8080/${formData[0].poll_url}` %>' />
+        <input type="text" readonly class="form-control" value='<%= `localhost:8080/events/${formData[0].poll_url}` %>' />
       </div>
     </article>
     <span class="alert alert-danger" role="alert">
-      <%= `Admin URL: https://localhost:8080/${formData[0].admin_url}` %>
+      <%= `Admin URL: localhost:8080/events/${formData[0].admin_url}` %>
     </span>
     <% } %>
 </section>
