@@ -1,10 +1,23 @@
-<nav class="navbar navbar-light bg-light">
-  <a class="navbar-brand" href="#">
-    <img src="/images/logo.png" alt="quickadoo_logo">
-  </a>
-  <span>
-    <% if(locals.admin_url){ %>
-      <%= admin_url %>
-        <% } %>
-  </span>
-</nav>
+<section class='nav-wrapper'>
+  <article>
+    <nav class="navbar navbar-light bg-light">
+      <a class="navbar-brand" href="#">
+        <img src="/images/logo.png" alt="quickadoo_logo">
+      </a>
+    </nav>
+  </article>
+  <% if(locals.formData){ %>
+    <article class='alert alert-success nav-alert-wrapper' role='alert'>
+      <h4>Success! Invite your friends via...</h4>
+      <div class="input-group">
+        <span class="input-group-addon">
+          <i class="material-icons">file_copy</i>
+        </span>
+        <input type="text" readonly class="form-control" value='<%= `localhost:8080/events/${formData[0].poll_url}` %>' />
+      </div>
+    </article>
+    <span class="alert alert-danger" role="alert">
+      <%= `Admin URL: localhost:8080/events/${formData[0].admin_url}` %>
+    </span>
+    <% } %>
+</section>

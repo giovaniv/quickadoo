@@ -19,66 +19,78 @@ module.exports = knex => {
     res.render('event');
   });
 
-  // event_id can be either admin_url (only admin knows it) or poll_url (public)
-  router.get('/events/:event_id', (req, res) => {
-    // use event_id to see if there is a corresponding event saved in psql
-    const { event_id } = req.params;
+  // url can be either admin_url (only admin knows it) or poll_url (public)
+  router.get('/events/:url', (req, res) => {
+    // use url to see if there is a corresponding event saved in psql
+    const { url } = req.params;
 
-    const checkExistingEvent = (knex, event_id) => {
+    const getEventId = (knex, url) => {
+      return new Promise((resolve, reject) => {
+        knex.select('id').from('events')
+          .where(function () {
+            this.where('events.admin_url', url).orWhere('events.poll_url', url)
+          }).then(eventId => {
+            if (eventId.length) {
+              resolve(eventId[0].id);
+            } else {
+              reject('no event_id found!');
+            }
+          })
+      })
+    }
+
+    const checkExistingEvent = (knex, url) => {
       return new Promise((resolve, reject) => {
         knex.select('*').from('options')
-        .join('events', 'options.event_id', 'events.id')
-        .join('users', 'events.creator_id', 'users.id')
+          .join('events', 'options.event_id', 'events.id')
+          .join('users', 'events.creator_id', 'users.id')
           .where(function () {
-            this.where('events.admin_url', event_id).orWhere('events.poll_url', event_id)
+            this.where('events.admin_url', url).orWhere('events.poll_url', url)
           })
           .then(eventRecord => {
-            resolve(eventRecord);
-          })
-          .catch(err => {
-            reject(err);
+            if (eventRecord.length) {
+              resolve(eventRecord);
+            } else {
+              reject('no url found!');
+            }
           })
       })
     };
 
-    async function getEventRecord(knex, event_id) {
-      const eventRecord = await checkExistingEvent(knex, event_id);
-      return eventRecord;
+
+    const countVoters = (knex, event_id) => {
+      return new Promise((resolve, reject) => {
+        knex.raw(`select option_id, count(person_id) from
+        (select id from options where event_id = ${event_id}) as tb1
+        join option_voters on tb1.id = option_voters.option_id group by option_id;`)
+          .then(result => {
+            resolve(result.rows);
+          })
+      })
     }
 
-    getEventRecord(knex, event_id)
-      .then(formData => {
-        if(event_id === formData[0].admin_url){
-          res.status(200).render('admin',{ poll: formData });
-        }else{
-          res.status(200).render('poll',{ poll: formData });
+
+    async function getEventRecord(knex, url) {
+      const event_id = await getEventId(knex, url);
+      const eventRecord = await checkExistingEvent(knex, url);
+      const voterCounts = await countVoters(knex, event_id);
+      return { eventRecord, voterCounts };
+    }
+
+    getEventRecord(knex, url)
+      .then(stats => {
+        console.log(stats);
+        if (url === stats.eventRecord[0].admin_url) {
+          console.log('render admin page');
+          res.status(200).render('event', { formData: stats.eventRecord });
+        } else {
+          console.log('poll');
+          res.status(200).render('poll', { poll: stats });
         }
       })
       .catch(err => {
         console.log(err);
       })
-    // knex.select('*').from('events')
-    //   .where(function () {
-    //     this.where('admin_url', event_id).orWhere('poll_url', event_id)
-    //   })
-    //   .then(rows => {
-    //     // if rows.length = 0 => there is no event in the database
-    //     // render index.ejs with an error message
-    //     if (!rows.length) {
-    //       res.status(400).render('index', {
-    //         message: "Sorry, we couldn't find the poll you requested :("
-    //       });
-    //     }
-    //     // if event_id === admin_url, usere is an admin.
-    //     // render event.ejs for the admin
-    //     if (rows[0].admin_url === event_id) {
-    //       res.status(200).render('event');
-    //     } else {
-    //       // event_id === poll_url. Render event.ejs for attendees
-    //       res.status(200).render('event');
-    //     }
-    //   })
-    //   .catch(err => console.log(err));
   });
 
   router.get("/api/users", (req, res) => {
@@ -115,8 +127,11 @@ module.exports = knex => {
 
     updateFormData(knex, user, event, formValues).then(ids => {
       console.log('update complete', ids);
-      const admin_page = `/events/${event.admin_url}`;
-      res.redirect(admin_page);
+
+      res.status(200).send({
+        admin_url: event.admin_url,
+        poll_url: event.poll_url
+      });
     }).catch(err => {
       console.log(err);
     });

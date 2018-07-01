@@ -1,7 +1,33 @@
-nav {
-  width: 100%;
-  border-radius: $radius;
-  img {
-    width: 200px;
+section.nav-wrapper {
+  nav.navbar {
+    width: 100%;
+    border-radius: $radius;
+    img {
+      width: 200px;
+    }
+  }
+  article.nav-alert-wrapper {
+    * {
+      margin: 0px auto;
+      background-color: #d4edda;
+      border-color: #c3e6cb;
+    }
+    .input-group {
+      margin-top: 15px;
+      width: 34vh;
+      &:hover {
+        border: 2px #64b5f6 solid;
+        border-radius: $radius;
+      }
+    }
+    i.material-icons {
+      vertical-align: middle;
+      font-size: 42px;
+      color: #00897b;
+    }
+    input[type="text"] {
+      font-size: 20px;
+      border: none;
+    }
   }
 }
