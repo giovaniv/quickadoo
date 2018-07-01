@@ -47,7 +47,7 @@ const checkExistingUser = (knex, userObj) => {
       .then(user_id => {
         resolve(user_id);
       })
-      .catch(err =>{
+      .catch(err => {
         reject(err);
       })
   });
@@ -72,26 +72,26 @@ const insertTbRow = (knex, insertObj, tb) => {
 async function updateFormData(knex, userObj, eventObj, optionForm) {
   // check if user exists. return row_id if exists or null for new record
   let userRecord = await checkExistingUser(knex, userObj);
-  let userId = '';
+  let user_id = '';
   if (userRecord.length) {
     // user exists in db. insert the user_id and the event record in events tb
-    userId = userRecord[0].id;
-    console.log(`user exists. user_id = ${userId}`);
+    user_id = userRecord[0].id;
+    console.log(`user exists. user_id = ${user_id}`);
   } else {
     // user doesn't exist in db. insert the new user record in users tb
-    userId = await insertTbRow(knex, userObj, 'users');
-    console.log(`user DOESN'T exist. added user_id: ${userId}`);
+    user_id = await insertTbRow(knex, userObj, 'users');
+    console.log(`user DOESN'T exist. added user_id: ${user_id}`);
   }
   // append user_id into the event object
-  eventObj.creator_id = userId;
+  eventObj.creator_id = user_id;
   // insert it to events tb
-  const eventId = await insertTbRow(knex, eventObj, 'events');
+  const event_id = await insertTbRow(knex, eventObj, 'events');
 
   // process the options obj
-  const optionInputs = parseOptions(optionForm, eventId);
+  const optionInputs = parseOptions(optionForm, event_id);
   // insert it to options tb
-  const optionId = await insertTbRow(knex, optionInputs, 'options');
-  return { user_id: userId, event_id: eventId, option_id: optionId };
+  const option_id = await insertTbRow(knex, optionInputs, 'options');
+  return { user_id, event_id, option_id };
 }
 
 module.exports = {
