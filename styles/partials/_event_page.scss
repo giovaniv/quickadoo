@@ -10,9 +10,11 @@
       margin-left: 30px;
     }
   }
-  input,
-  textarea {
+  .input-group>.custom-select:not(:first-child),
+  .input-group>.form-control:not(:first-child) {
+    // input boxes and textareas
     margin: 0 10px;
+    border-radius: $radius;
   }
   .left-icon {
     width: 20px;
@@ -35,8 +37,7 @@
   }
   .right-icon i.fas.fa-thumbs-up {
     font-size: 24px;
-    vertical-align: super;
-    // float: left;
+    vertical-align: super; // float: left;
     display: none;
   }
   .right-icon input {
@@ -45,14 +46,9 @@
     display: none;
   }
   #counter {
-    font-size: 24px;
-    // vertical-align: super;
+    font-size: 24px; // vertical-align: super;
     display: none;
     float: right;
     margin-left: 10px;
-  }
-  input[value='CREATE'] {
-    @extend %shadow-effect;
-    display: none;
   }
 }
