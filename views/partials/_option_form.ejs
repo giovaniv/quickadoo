@@ -1,32 +1,35 @@
 <!-- option name -->
-<div class='form-group'>
-  <div class='input-group'>
-    <p class='material-icons left-icon'></p>
-    <input type='text' name='name' class='form-control options col-6' placeholder='Option name' value='<% if(locals.option){ %><%- option.name %><% } %>' required>
-    <div class='right-icon col-6'>
-      <input type='checkbox'>
-      <i class='fas fa-thumbs-up'></i>
-      <p id='counter'>0 Votes</p>
-      <i class='material-icons copy'>create_new_folder</i>
-      <i class='material-icons delete'>delete</i>
-    </div>
-    <div class='invalid-feedback'>
-      Please name your option.
+
+<div id='option-1'>
+  <div class='form-group'>
+    <div class='input-group'>
+      <p class='material-icons left-icon'></p>
+      <input type='text' name='name' class='form-control options col-6' placeholder='Option name' value='<% if(locals.option){ %><%- option.name %><% } %>'
+        required>
+      <div class='right-icon col-6'>
+        <i class='material-icons copy'>create_new_folder</i>
+        <i class='material-icons delete'>delete</i>
+      </div>
+      <div class='invalid-feedback'>
+        Please name your option.
+      </div>
     </div>
   </div>
-</div>
-<!-- option time -->
-<div class='form-group'>
-  <div class='input-group'>
-    <i class='material-icons left-icon'>access_time</i>
-    <input type='text' name='start_time' class='form-control col-6' value='<% if(locals.option){ %><%- option.start_time %><% } %>' placeholder='Start time'>
-    <input type='text' name='end_time' class='form-control col-6' value='<% if(locals.option){ %><%- option.end_time %><% } %>' placeholder='End time'>
+  <!-- option time -->
+  <div class='form-group'>
+    <div class='input-group'>
+      <i class='material-icons left-icon'>access_time</i>
+      <input type='text' name='start_time' class='form-control col-6' value='<% if(locals.option){ %><%- option.start_time %><% } %>'
+        placeholder='Start time'>
+      <input type='text' name='end_time' class='form-control col-6' value='<% if(locals.option){ %><%- option.end_time %><% } %>'
+        placeholder='End time'>
+    </div>
   </div>
-</div>
-<!-- option note -->
-<div class='form-group'>
-  <div class='input-group'>
-    <i class='material-icons left-icon'>create</i>
-    <textarea name='note' class='form-control' value='<% if(locals.option){ %><%- option.note %><% } %>' placeholder='Add notes'></textarea>
+  <!-- option note -->
+  <div class='form-group'>
+    <div class='input-group'>
+      <i class='material-icons left-icon'>create</i>
+      <textarea name='note' class='form-control' value='<% if(locals.option){ %><%- option.note %><% } %>' placeholder='Add notes'></textarea>
+    </div>
   </div>
 </div>

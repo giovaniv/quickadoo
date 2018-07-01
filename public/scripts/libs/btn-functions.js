@@ -4,9 +4,12 @@ const activateCopyBtn = () => {
     const $optionSection = $('.option');
     // each option div
     const $eachOption = $(this).parents().eq(3);
-    $eachOption.clone(true, true).appendTo($optionSection);
-    $eachOption.unbind('click');
-  })
+    const $cloner = $eachOption.clone(true, true);
+    const $currentIdNum = Number($cloner.attr('id').split('-')[1]);
+    const $nextId = `option-${$currentIdNum + 1}`;
+    $cloner.attr('id', $nextId);
+    $cloner.insertAfter($optionSection);
+  });
 };
 
 const activateDeleteBtn = () => {
