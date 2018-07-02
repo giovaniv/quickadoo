@@ -80,11 +80,6 @@ module.exports = knex => {
     });
   })
 
-
-  // ==================================================
-  // Start of change by Giovani
-  // ==================================================
-
   //check if email exists and if exists, returns voters info
   router.post('/voters', (req, res) => {
     const { email } = req.body;
@@ -140,10 +135,6 @@ module.exports = knex => {
         console.log(err);
       });
   });
-
-  // ==================================================
-  // End of change by Giovani
-  // ==================================================
 
   return router;
 };
