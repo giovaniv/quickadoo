@@ -10,7 +10,8 @@ const filterObj = (obj, filter) => {
 }
 
 // calitalise the first letter of a name
-const capitaliseFirstLetter = name => name.replace(/^\w/, letter => letter.toUpperCase());
+const capitaliseFirstLetter = name => name.toLowerCase().replace(/^\w/, letter => letter.toUpperCase());
+
 
 // generate a random alphanumeric string
 const generateRandomString = length => Math.random().toString(36).substring(2, length + 2);
