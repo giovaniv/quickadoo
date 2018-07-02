@@ -42,6 +42,10 @@ const countVoters = (knex, event_id) => {
     from options a, users b, option_voters c where a.id=c.option_id and b.id=c.person_id and a.event_id = ${event_id}) as a
     group by a.option_id;`)
       .then(result => {
+        result.rows.forEach((option, index) => {
+          const counts = option.name.split(',').length;
+          result.rows[index].counts = counts;
+        })
         resolve(result.rows);
       })
   })
