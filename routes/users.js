@@ -1,7 +1,9 @@
 'use strict';
 const express = require('express');
 const router = express.Router();
-const castVotes = require('../libs/update-voter-queries');
+
+// import functions
+const { validateVoters, castVotes } = require('../libs/update-voter-queries');
 const getEventRecord = require('../libs/update-event-queries');
 const updateFormData = require('../libs/update-form-queries');
 const { filterObj, generateRandomString, capitaliseFirstLetter } = require('../libs/query-helpers');
@@ -80,30 +82,17 @@ module.exports = knex => {
     });
   })
 
-
-  // ==================================================
-  // Start of change by Giovani
-  // ==================================================
-
   //check if email exists and if exists, returns voters info
   router.post('/voters', (req, res) => {
     const { email } = req.body;
-    knex.raw('select * from users where email = ?', email)
-      .then(result => {
-        if (result.rowCount) {
-          knex.raw('select * from option_voters where person_id = ?', result.rows[0].id)
-            .then(lines => {
-              const options = [];
-              for (let i = 0; i < lines.rows.length; i++) {
-                options.push(lines.rows[i].option_id);
-              }
-              res.status(200).send({
-                user: result.rows[0],
-                options
-              });
-            });
-        }
-      });
+
+    validateVoters(knex, email)
+      .then(voterResult => {
+        res.status(200).send(voterResult);
+      })
+      .catch(err => {
+        console.log(err);
+      })
   });
 
   router.post('/events/:event_id/vote', (req, res) => {
@@ -140,10 +129,6 @@ module.exports = knex => {
         console.log(err);
       });
   });
-
-  // ==================================================
-  // End of change by Giovani
-  // ==================================================
 
   return router;
 };

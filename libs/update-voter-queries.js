@@ -1,3 +1,30 @@
+const getOptionVoters = (knex, voterId) => {
+  return new Promise((resolve, reject) => {
+    knex.raw('select * from option_voters where person_id = ?', voterId)
+      .then(rows => {
+        resolve(rows);
+      })
+      .catch(err => {
+        reject(err);
+      })
+  });
+};
+
+async function validateVoters(knex, userEmail) {
+  const voterRow = await checkVoterExists(knex, userEmail);
+  if (voterRow.rowCount) {
+    const optionVoterRows = await getOptionVoters(knex, voterRow.rows[0].id);
+    const options = [];
+    for (let i = 0; i < optionVoterRows.rows.length; i++) {
+      options.push(optionVoterRows.rows[i].option_id);
+    }
+    return {
+      user: voterRow.rows[0],
+      options
+    };
+  }
+}
+
 // check if the voter exists in db
 const checkVoterExists = (knex, voterEmail) => {
   return new Promise((resolve, reject) => {
@@ -61,4 +88,7 @@ async function castVotes(knex, userEmail, voterData, selectedOptions) {
   await updateOptionVoters(knex, userId, selectedOptions);
 }
 
-module.exports = castVotes;
+module.exports = {
+  validateVoters,
+  castVotes
+};

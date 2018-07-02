@@ -1,3 +1,5 @@
+
+
 const displayVoterChoices = response => {
   const { user, options } = response;
   const { first_name, last_name } = user;
