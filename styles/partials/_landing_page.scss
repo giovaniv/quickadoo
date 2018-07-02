@@ -1,9 +1,11 @@
 .landing-page {
   margin-top: 30vh;
-  width: 80vh;
   border-radius: $radius;
   text-align: center;
   padding: 50px 0px;
+  h1 {
+    font-size: 32px;
+  }
   main {
     text-align: left;
     margin: 0 auto;

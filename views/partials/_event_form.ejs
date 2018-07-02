@@ -5,9 +5,9 @@
     <div class='form-group'>
       <div class='input-group'>
         <i class='material-icons left-icon'>person_outline</i>
-        <input type='text' name='first_name' class='form-control col-3' placeholder='First name' value='<% if(locals.formData){ %><%= formData[0].first_name %><% } %>'
+        <input type='text' name='first_name' class='form-control col-6' placeholder='First name' value='<% if(locals.formData){ %><%= formData[0].first_name %><% } %>'
           required>
-        <input type='text' name='last_name' class='form-control col-3' placeholder='Last name' value='<% if(locals.formData){ %><%= formData[0].last_name %><% } %>'
+        <input type='text' name='last_name' class='form-control col-6' placeholder='Last name' value='<% if(locals.formData){ %><%= formData[0].last_name %><% } %>'
           required>
         <div class='invalid-feedback'>
           Please provide your first and last names.
@@ -18,7 +18,7 @@
     <div class='form-group'>
       <div class='input-group'>
         <i class='material-icons left-icon'>alternate_email</i>
-        <input type='email' name='email' class='form-control col-5' placeholder='Email' value='<% if(locals.formData){ %><%= formData[0].email %><% } %>'
+        <input type='email' name='email' class='form-control col-6' placeholder='Email' value='<% if(locals.formData){ %><%= formData[0].email %><% } %>'
           required>
         <div class='invalid-feedback'>
           Please provide a valid email.
@@ -34,7 +34,7 @@
     <div class='form-group'>
       <div class='input-group'>
         <i class='material-icons left-icon'>title</i>
-        <input type='text' name='title' class='form-control' placeholder='Enter title (i.e. What movie to watch?)' value='<% if(locals.formData){ %><%= formData[0].title %><% } %>'
+        <input type='text' name='title' class='form-control col-6' placeholder='Enter title (i.e. What movie to watch?)' value='<% if(locals.formData){ %><%= formData[0].title %><% } %>'
           required>
         <div class='invalid-feedback'>
           Please provide an event title.
