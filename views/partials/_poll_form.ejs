@@ -68,13 +68,13 @@ function myFunction() {
       <%=description%>
     </p>
     <p>
-      <% first_name + last_name %>
+      <%= `Created By ${first_name} ${last_name}` %>
     </p>
     <p>
       <%=created_at %>
     </p>
     <p>
-      <input type="text" value="localhost:8080/events/<%=poll_url %>" id="myInput" size=40 readonly>
+      <input type="text" value="http://10.30.33.183:8080/events/<%=poll_url %>" id="myInput" size=40 readonly>
       <button onclick="myFunction()">Copy text</button>
     </p>
   </div>
