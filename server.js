@@ -3,6 +3,7 @@
 // enable dotenv package
 require('dotenv').config();
 
+const IP = '0.0.0.0';
 // process.env.PORT in case Heroku
 const PORT = process.env.PORT || 8080;
 const ENV = process.env.ENV || "development";
@@ -11,7 +12,6 @@ const ENV = process.env.ENV || "development";
 const express = require("express");
 const bodyParser = require("body-parser");
 const sass = require("node-sass-middleware");
-const methodOverride = require('method-override');
 
 // enable express app
 const app = express();
@@ -51,17 +51,13 @@ app.use("/styles", sass({
 // app.use(express.static("/public"));
 app.use(express.static(__dirname + '/public'));
 
-// METHOD OVERRIDE for POST request
-// override with the X-HTTP-Method-Override header in the request
-app.use(methodOverride('X-HTTP-Method-Override'));
-// override with POST having ?_method=DELETE or UPDATE
-app.use(methodOverride('_method'));
-
 // ROUTES
 // Mount routes
 app.use('/', usersRoutes(knex));
 
 // listen to port
-app.listen(PORT, () => {
+// if we set the IP address to '0.0.0.0', anyone can view the web page through my IP address
+// how to check IP address: 'ifconfig' on linux terminal -> check 'inet'
+app.listen(PORT, '0.0.0.0', () => {
   console.log("Example app listening on port " + PORT);
 });
