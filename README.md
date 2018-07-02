@@ -1,4 +1,4 @@
-<!-- !["Landing Page"]() -->
+!["Logo"](https://github.com/Wisara8/quickadoo/blob/master/docs/logo.png?raw=true)
 # Quickadoo
 ## Plan your day with Quickadoo
 
