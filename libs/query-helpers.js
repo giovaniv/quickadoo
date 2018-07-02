@@ -1,4 +1,3 @@
-
 // function to filter keys in a object and return the values of this filter
 const filterObj = (obj, filter) => {
   let key, keys = []

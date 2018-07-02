@@ -88,7 +88,4 @@ async function castVotes(knex, userEmail, voterData, selectedOptions) {
   await updateOptionVoters(knex, userId, selectedOptions);
 }
 
-module.exports = {
-  validateVoters,
-  castVotes
-};
+module.exports = { validateVoters, castVotes };
