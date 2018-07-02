@@ -1,6 +1,6 @@
 $(() => {
   const { activateCopyBtn, activateDeleteBtn, makeUrlCopyBtn } = activateBtns;
-  const { updateVoterInfo, selectFirstField, validateForm, submitEventForm } = formFunc;
+  const { selectFirstField, validateForm, submitEventForm } = formFunc;
   const { dtPickerConfig, activateCalendar } = makeCalendar;
   // change all icon cursors to pointer
   $('i.material-icons').css('cursor', 'pointer');

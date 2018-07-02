@@ -1,7 +1,7 @@
 'use strict';
 const express = require('express');
 const router = express.Router();
-const { getEventRecord, updateFormData, generateRandomString, capitaliseFirstLetter } = require('../libs/query-helpers');
+const { castVotes, filterObj, getEventRecord, updateFormData, generateRandomString, capitaliseFirstLetter } = require('../libs/query-helpers');
 
 module.exports = knex => {
   // root. redirect to /home with http status of 302
@@ -55,12 +55,13 @@ module.exports = knex => {
 
     // event data
     const { title, description } = formValues;
+    const randomStrLen = 7;
     const event = {
       title,
       description,
       created_at: new Date(Date.now()),
-      admin_url: generateRandomString(7),
-      poll_url: generateRandomString(7)
+      admin_url: generateRandomString(randomStrLen),
+      poll_url: generateRandomString(randomStrLen)
     };
 
     // update form data to appropriate tables
@@ -84,19 +85,18 @@ module.exports = knex => {
   //check if email exists and if exists, returns voters info
   router.post('/voters', (req, res) => {
     const { email } = req.body;
-    console.log(email);
     knex.raw('select * from users where email = ?', email)
       .then(result => {
         if (result.rowCount) {
           knex.raw('select * from option_voters where person_id = ?', result.rows[0].id)
             .then(lines => {
-              const myOptions = [];
+              const options = [];
               for (let i = 0; i < lines.rows.length; i++) {
-                myOptions.push(lines.rows[i].option_id);
+                options.push(lines.rows[i].option_id);
               }
               res.status(200).send({
                 user: result.rows[0],
-                options: myOptions
+                options
               });
             });
         }
@@ -105,91 +105,39 @@ module.exports = knex => {
 
   router.post('/events/:event_id/vote', (req, res) => {
     // fields that we need
-    let { voter_first_name, voter_last_name, voter_email, poll_url, poll_info } = req.body;
-    voter_first_name = capitaliseFirstLetter(voter_first_name);
-    voter_last_name = capitaliseFirstLetter(voter_last_name);
-
-    // let path = "/events/" + poll_url;
+    const { voter_first_name, voter_last_name, voter_email, poll_url, poll_info } = req.body;
+    const first_name = capitaliseFirstLetter(voter_first_name);
+    const last_name = capitaliseFirstLetter(voter_last_name);
 
     // check if the fields have some value
-    if (!voter_email || !voter_first_name || !voter_last_name) {
-      res.status(302).render('poll', {
-        poll: JSON.parse(poll_info), message: 'Please fill your e-mail and name'
-      });
-    }
-
-    // function to filter keys in a object and return the values of this filter
-    let filterValues = (obj, filter) => {
-      let key, keys = []
-      for (key in obj) {
-        if (obj.hasOwnProperty(key) && filter.test(key)) {
-          keys.push(obj[key])
-        }
-      }
-      return keys
+    if (!voter_email || !first_name || !last_name) {
+      const err = {
+        poll: JSON.parse(poll_info),
+        message: 'Please fill your e-mail and name'
+      };
+      res.status(302).render('poll', err);
+      return;
     }
 
     // we filter all the keys 'option?' where ? is any number
     // and we return all the options_id that the user selected
-    let filteredOptions = filterValues(req.body, /option/);
+    const filteredOptions = filterObj(req.body, /option/);
+    const voterData = {
+      first_name,
+      last_name,
+      email: voter_email
+    };
 
-
-    // 1 - check if the user exists
-    // 1.1 - If user not exists, insert user and user votes
-    // 1.2 - If user exists, delete all user votes and insert the new votes again
-    // 2 - redirect to the same place
-
-    // 1 - check if the user exists
-    knex.raw('select * from users where email = ?', voter_email)
-      .then(function (result) {
-
-        // 1.1 - If user not exists, insert user and user votes
-        if (!result.rowCount) {
-          let myData = {
-            first_name: voter_first_name,
-            last_name: voter_last_name,
-            email: voter_email
-          }
-          knex('users')
-            .returning('id')
-            .insert(myData)
-            .then(function (result) {
-              let myID = result[0];
-              // new options
-              filteredOptions.forEach(function (option) {
-                knex.raw(`insert into option_voters (option_id, person_id) values (${option},${myID})`)
-                  .catch(function (err) {
-                    console.log(err);
-                  })
-              });
-            })
-            .catch(function (err) {
-              console.log(err);
-            })
-        } else {
-          // 1.2 - If user exists, delete all user votes and insert the new votes again
-          const id = result.rows[0].id;
-          knex('option_voters').where('person_id', id).del()
-            .catch(function (err) {
-              console.log(err);
-            })
-          // new options
-          filteredOptions.forEach(function (option) {
-            knex.raw(`insert into option_voters (option_id, person_id) values (${option},${id})`)
-              .catch(function (err) {
-                console.log(err);
-              })
-          });
-        }
-
+    castVotes(knex, voter_email, voterData, filteredOptions)
+      .then(() => {
         // 2 - redirect to the thanks page
         res.status(200).render('thanks', { url: poll_url });
-
+      })
+      .catch(err => {
+        console.log(err);
       });
-
-    return;
-
   });
+
   // ==================================================
   // End of change by Giovani
   // ==================================================
