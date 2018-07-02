@@ -64,8 +64,4 @@ const submitEventForm = () => {
   })
 };
 
-window.formFunc = {
-  selectFirstField,
-  validateForm,
-  submitEventForm
-};
+window.formFunc = { selectFirstField, validateForm, submitEventForm };

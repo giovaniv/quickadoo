@@ -7,6 +7,18 @@ const getNextIdNumber = ($parentDiv, delim) => {
   return Math.max(...idArray);
 };
 
+const cloneOptionDiv = $selectedBtn => {
+  // parent option div
+  const $optionSection = $('.option');
+  // each option div (child)
+  const $eachOption = $selectedBtn.parents().eq(3);
+  // create a cloner
+  const $cloner = $eachOption.clone(true, true);
+  const nextOptionId = `option-${getNextIdNumber($optionSection, '-') + 1}`;
+  // assign your new id to the cloner and insert it
+  $cloner.attr('id', nextOptionId).insertAfter($eachOption);
+};
+
 // appends a clone of your selected option div to its parent div
 const activateCopyBtn = datetimePickerConfig => {
   $('form .copy').on('click', function () {
@@ -16,15 +28,7 @@ const activateCopyBtn = datetimePickerConfig => {
     // destroy datetimepicker (IMPORTANT! this must occur before inserting the clone)
     $('form .datetimepickers').datetimepicker('destroy');
 
-    // parent option div
-    const $optionSection = $('.option');
-    // each option div (child)
-    const $eachOption = $(this).parents().eq(3);
-    // create a cloner
-    const $cloner = $eachOption.clone(true, true);
-    const nextOptionId = `option-${getNextIdNumber($optionSection, '-') + 1}`;
-    // assign your new id to the cloner and insert it
-    $cloner.attr('id', nextOptionId).insertAfter($eachOption);
+    cloneOptionDiv($(this));
 
     // configure the datetimepicker again
     $('.datetimepickers').datetimepicker(datetimePickerConfig);
@@ -34,9 +38,23 @@ const activateCopyBtn = datetimePickerConfig => {
 // delete option div when you click on the trash icon
 const activateDeleteBtn = () => {
   $('form .delete').on('click', function () {
-    const $currentOption = $(this).parents().eq(3);
-    $currentOption.remove();
+    // do not allow users to remove option div if there is only one!
+    const howManyLeft = $('.option').find('.delete').length;
+    if (howManyLeft > 1) {
+      const $currentOption = $(this).parents().eq(3);
+      $currentOption.remove();
+    }
   })
+};
+
+const copyTextToClipboard = $text => {
+  const $temp = $("<input>");
+  // create a temporary input field and put the copied text in it.
+  // then execute document.execCommand() to save it to clipboard
+  $("body").append($temp);
+  $temp.val($text).select();
+  document.execCommand("copy");
+  $temp.remove();
 };
 
 // create a button that users can click on to copy poll URLs
@@ -44,19 +62,9 @@ const makeUrlCopyBtn = () => {
   $('article.nav-alert-wrapper .input-group').click(function () {
     const $parentDiv = $(this).parents().eq(1);
     // get the input value and copy it to clipboard
-    const $value = $parentDiv.find('input[type="text"]').val();
-    const $temp = $("<input>");
-    // create a temporary input field and put the copied text in it.
-    // then execute document.execCommand() to save it to clipboard
-    $("body").append($temp);
-    $temp.val($value).select();
-    document.execCommand("copy");
-    $temp.remove();
+    const $textValue = $parentDiv.find('input[type="text"]').val();
+    copyTextToClipboard($textValue);
   })
 };
 
-window.activateBtns = {
-  activateCopyBtn,
-  activateDeleteBtn,
-  makeUrlCopyBtn
-}
+window.activateBtns = { activateCopyBtn, activateDeleteBtn, makeUrlCopyBtn }
