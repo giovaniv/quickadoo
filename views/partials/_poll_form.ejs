@@ -9,23 +9,31 @@ const {title, description, poll_url, event_id} = poll.eventRecord[0];
 let totals = poll.voterCounts;
 %>
 
-<script>
-function myFunction() {
-  /* Get the text field */
-  var copyText = document.getElementById("myInput");
-  /* Select the text field */
-  copyText.select();
-  /* Copy the text inside the text field */
-  document.execCommand("copy");
-}
-</script>
+  <script>
+    function myFunction() {
+      /* Get the text field */
+      var copyText = document.getElementById("myInput");
+      /* Select the text field */
+      copyText.select();
+      /* Copy the text inside the text field */
+      document.execCommand("copy");
+    }
+  </script>
 
   <!-- Title information -->
   <div class="container">
-    <h1><%=title %></h1>
-    <p><%=description%></p>
-    <p><% first_name + last_name %></p>
-    <p><%=created_at %></p>
+    <h1>
+      <%=title %>
+    </h1>
+    <p>
+      <%=description%>
+    </p>
+    <p>
+      <% first_name + last_name %>
+    </p>
+    <p>
+      <%=created_at %>
+    </p>
     <p>
       <input type="text" value="localhost:8080/events/<%=poll_url %>" id="myInput" size=40 readonly>
       <button onclick="myFunction()">Copy text</button>
@@ -34,71 +42,85 @@ function myFunction() {
 
   <form action="/events/<%=poll_url%>/vote" method="POST">
 
-  <% if (locals.message) { %>
-    <div class="alert alert-danger">
-      <%=locals.message%>
-    </div>
-  <% }%>
+    <% if (locals.message) { %>
+      <div class="alert alert-danger">
+        <%=locals.message%>
+      </div>
+      <% }%>
 
-    <!-- Current voter information -->
-  <div class="container align-items-center justify-content-center">
-    <table class="table shadow">
-      <thead>
-        <tr>
-          <th scope="col" class="table-success">E-mail</th>
-          <th scope="col" class="table-success">First name</th>
-          <th scope="col" class="table-success">Last name</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><input type=email name="voter_email" placeholder="E-mail"></td>
-          <td><input type=text name="voter_first_name" placeholder="First name"></td>
-          <td><input type=text name="voter_last_name" placeholder="Last name"></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+        <!-- Current voter information -->
+        <div class="container align-items-center justify-content-center">
+          <table class="table shadow">
+            <thead>
+              <tr>
+                <th scope="col" class="table-success">E-mail</th>
+                <th scope="col" class="table-success">First name</th>
+                <th scope="col" class="table-success">Last name</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <input type=email name="voter_email" placeholder="E-mail">
+                </td>
+                <td>
+                  <input type=text name="voter_first_name" placeholder="First name">
+                </td>
+                <td>
+                  <input type=text name="voter_last_name" placeholder="Last name">
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
-  <table class="table table-bordered shadow">
-    <thead>
-      <tr>
-        <th scope="col" class="table-success">&nbsp;</th>
-        <th scope="col" class="table-success">Option</th>
-        <th scope="col" class="table-success">Date</th>
-        <th scope="col" class="table-success">Time</th>
-        <th scope="col" class="table-success">Attendees</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% for (let i = 0; i < poll.eventRecord.length; i++) {
+        <table class="table table-bordered shadow">
+          <thead>
+            <tr>
+              <th scope="col" class="table-success">&nbsp;</th>
+              <th scope="col" class="table-success">Option</th>
+              <th scope="col" class="table-success">Date</th>
+              <th scope="col" class="table-success">Time</th>
+              <th scope="col" class="table-success">Attendees</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for (let i = 0; i < poll.eventRecord.length; i++) {
         let option_id = poll.eventRecord[i].option_id;
         let option_name = poll.eventRecord[i].name;
         let start_time = poll.eventRecord[i].start_time;
         let chkOption = "option" + i;
       %>
-      <tr>
-        <th scope="row" class="text-left">
-          <input type="checkbox" name="<%=chkOption%>" value="<%=option_id%>">
-        </th>
-        <td><%=option_name%></td>
-        <td><%=start_time%></td>
-        <td><%=start_time%></td>
-        <td><%
+              <tr>
+                <th scope="row" class="text-left">
+                  <input type="checkbox" name="<%=chkOption%>" value="<%=option_id%>">
+                </th>
+                <td>
+                  <%=option_name%>
+                </td>
+                <td>
+                  <%=start_time%>
+                </td>
+                <td>
+                  <%=start_time%>
+                </td>
+                <td>
+                  <%
           totals.forEach(function(x){
             if (option_id === x.option_id) { %>
-              <%=x.count%>
-            <%}
+                    <%=x.count%>
+                      <%}
           })
-        %></td>
-      </tr>
-      <% } %>
-    </tbody>
-  </table>
-  <input type=hidden name="person_id" value="<%=id%>">
-  <input type=hidden name="event_id" value="<%=event_id%>">
-  <input type=hidden name="poll_url" value="<%=poll_url%>">
-  <input type=hidden name="poll_info" value="<%=JSON.stringify(poll)%>">
-  <input type="submit" id="sendVote" class="btn btn-primary" value='VOTE'>
+        %>
+                </td>
+              </tr>
+              <% } %>
+          </tbody>
+        </table>
+        <input type=hidden name="person_id" value="<%=id%>">
+        <input type=hidden name="event_id" value="<%=event_id%>">
+        <input type=hidden name="poll_url" value="<%=poll_url%>">
+        <input type=hidden name="poll_info" value="<%=JSON.stringify(poll)%>">
+        <input type="submit" id="sendVote" class="btn btn-primary" value='VOTE'>
   </form>
   <p></p>
