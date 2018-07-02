@@ -2,15 +2,6 @@
   border: 1px solid gray;
   padding: 10px 0px 10px 10px;
   margin: 10px 10px 0 10px;
-  h3 {
-    float: left;
-    clear: both;
-  }
-  p {
-    display: inline-block;
-    margin-right: 10px;
-    float: right;
-  }
   input,
   i {
     display: inline-block;
@@ -20,4 +11,8 @@
     display: block;
     clear: both;
   }
+}
+
+span.event_title {
+  font-size: 33px;
 }

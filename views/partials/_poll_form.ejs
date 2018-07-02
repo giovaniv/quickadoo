@@ -51,31 +51,31 @@ function getNames(data,limit) {
 
 %>
 
-<script>
-function myFunction() {
-  var copyText = document.getElementById("myInput");
-  copyText.select();
-  document.execCommand("copy");
-}
-</script>
+  <script>
+    function myFunction() {
+      var copyText = document.getElementById("myInput");
+      copyText.select();
+      document.execCommand("copy");
+    }
+  </script>
 
   <!-- Title information -->
   <div class="container">
-    <h1>
+    <span class='event_title'>
       <%=title %>
-    </h1>
+    </span> created by
+    <span class='badge badge-info'>
+      <%= `${first_name} ${last_name}` %>
+    </span>
     <p>
       <%=description%>
     </p>
     <p>
-      <%= `Created By ${first_name} ${last_name}` %>
-    </p>
-    <p>
-      <%=created_at %>
+      <%=`Created at: ${created_at}` %>
     </p>
     <p>
       <input type="text" value="http://10.30.33.183:8080/events/<%=poll_url %>" id="myInput" size=40 readonly>
-      <button class='btn btn-warning btn-sm' onclick="myFunction()">Copy text</button>
+      <button class='btn btn-warning btn-sm' onclick="myFunction()">COPY</button>
 
     </p>
   </div>
@@ -114,19 +114,19 @@ function myFunction() {
           </table>
         </div>
 
-  <table class="table table-bordered shadow">
-    <thead>
-      <tr>
-        <th scope="col" class="table-success">&nbsp;</th>
-        <th scope="col" class="table-success">Option</th>
-        <th scope="col" class="table-success">Date</th>
-        <th scope="col" class="table-success">Time</th>
-        <th scope="col" class="table-success">Attendees</th>
-        <th scope="col" class="table-success">Votes</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% for (let i = 0; i < poll.eventRecord.length; i++) {
+        <table class="table table-bordered shadow">
+          <thead>
+            <tr>
+              <th scope="col" class="table-success">&nbsp;</th>
+              <th scope="col" class="table-success">Option</th>
+              <th scope="col" class="table-success">Date</th>
+              <th scope="col" class="table-success">Time</th>
+              <th scope="col" class="table-success">Attendees</th>
+              <th scope="col" class="table-success">Votes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for (let i = 0; i < poll.eventRecord.length; i++) {
         let option_id = poll.eventRecord[i].option_id;
         let option_name = poll.eventRecord[i].name;
         let start_time = poll.eventRecord[i].start_time;
@@ -147,17 +147,22 @@ function myFunction() {
                 </td>
                 <td>
                   <%
+                  totals.forEach((x,index)=>{
+                    if (option_id === x.option_id) { %>
+                    <span class='badge badge-primary'>
+                      <%=getNames(convertNames(x.name),3)%>
+                    </span>
+
+                    <%}
+                    })
+                    %>
+                </td>
+                <td>
+                  <%
           totals.forEach(function(x){
             if (option_id === x.option_id) { %>
-              <%=getNames(convertNames(x.name),3)%>
-            <%}
-          })
-        %></td>
-        <td><%
-          totals.forEach(function(x){
-            if (option_id === x.option_id) { %>
-              <%=x.counts%>
-            <%}
+                    <%=x.counts%>
+                      <%}
           })
         %>
                 </td>

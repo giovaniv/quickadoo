@@ -2,7 +2,9 @@ section.nav-wrapper {
   nav.navbar {
     width: 100%;
     border-radius: $radius;
+    display: inline-block;
     img {
+      float: center;
       width: 200px;
     }
   }
@@ -13,8 +15,7 @@ section.nav-wrapper {
       border-color: #c3e6cb;
     }
     .input-group {
-      margin-top: 15px;
-      width: 45vh;
+      margin: 15px auto 0;
       &:hover {
         border: 2px #64b5f6 solid;
         border-radius: $radius;
