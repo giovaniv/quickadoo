@@ -8,16 +8,58 @@ const {title, description, poll_url, event_id} = poll.eventRecord[0];
 // TOTAL OF VOTES BY EACH OPTIONS OF THE EVENT
 let totals = poll.voterCounts;
 
-console.log(poll);
+let name = poll.voterCounts[0].name;
+var re = /\s*,\s*/;
+var nameList = name.split(re);
+console.log(nameList);
+
+function convertNames(names) {
+  let re = /\s*,\s*/;
+  let result = names.split(re);
+  return result;
+}
+
+function getNames(data,limit) {
+  let tam = data.length;
+  let dif = 0;
+  let result = '';
+  if (tam > limit) {
+    dif = tam - limit;
+  }
+  if (dif) {
+    if (limit === 1) {
+      return data[0] + ' (+' + (tam - 1) + ')';
+    } else {
+      let upTo = limit - 1;
+      for (let i = 0; i <= upTo; i++ ) {
+        if (i === upTo) {
+          result += data[i];
+        } else {
+          result += data[i] + ', ';
+        }
+      }
+      result += ' (+' + dif + ')';
+      return result;
+    }
+  } else {
+    for (let i = 0; i < data.length; i++ ) {
+      if (i === data.length - 1) {
+        result += data[i];
+      } else {
+        result += data[i] + ', ';
+      }
+    }
+    return result;
+  }
+  return data;
+}
+
 %>
 
 <script>
 function myFunction() {
-  /* Get the text field */
   var copyText = document.getElementById("myInput");
-  /* Select the text field */
   copyText.select();
-  /* Copy the text inside the text field */
   document.execCommand("copy");
 }
 </script>
@@ -70,6 +112,7 @@ function myFunction() {
         <th scope="col" class="table-success">Date</th>
         <th scope="col" class="table-success">Time</th>
         <th scope="col" class="table-success">Attendees</th>
+        <th scope="col" class="table-success">Votes</th>
       </tr>
     </thead>
     <tbody>
@@ -89,7 +132,14 @@ function myFunction() {
         <td><%
           totals.forEach(function(x){
             if (option_id === x.option_id) { %>
-              <%=x.count%>
+              <%=getNames(convertNames(x.name),3)%>
+            <%}
+          })
+        %></td>
+        <td><%
+          totals.forEach(function(x){
+            if (option_id === x.option_id) { %>
+              <%=x.counts%>
             <%}
           })
         %></td>

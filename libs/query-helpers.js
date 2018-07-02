@@ -42,11 +42,16 @@ const countVoters = voterResults => {
   return voterResults;
 }
 
+// `select a.option_id, STRING_AGG(a.name,', ') as name
+//     from (select c.option_id, concat(left(b.first_name,1),left(b.last_name,1)) as name
+//     from options a, users b, option_voters c where a.id=c.option_id and b.id=c.person_id and a.event_id = ${event_id}) as a
+//     group by a.option_id;`
+
 // count the number of votes for each option
 const getVoterInitials = (knex, event_id) => {
   return new Promise((resolve, reject) => {
     knex.raw(`select a.option_id, STRING_AGG(a.name,', ') as name
-    from (select c.option_id, concat(left(b.first_name,1),left(b.last_name,1)) as name
+    from (select c.option_id, b.first_name as name
     from options a, users b, option_voters c where a.id=c.option_id and b.id=c.person_id and a.event_id = ${event_id}) as a
     group by a.option_id;`)
       .then(result => {
