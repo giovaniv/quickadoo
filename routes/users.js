@@ -95,7 +95,7 @@ module.exports = knex => {
                 myOptions.push(lines.rows[i].option_id);
               }
               res.status(200).send({
-                attendee: result.rows[0],
+                user: result.rows[0],
                 options: myOptions
               });
             });
