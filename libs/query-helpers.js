@@ -34,19 +34,23 @@ const checkExistingEvent = (knex, url) => {
   })
 };
 
+const countVoters = voterResults => {
+  voterResults.forEach((option, index) => {
+    const counts = option.name.split(',').length;
+    voterResults[index].counts = counts;
+  })
+  return voterResults;
+}
+
 // count the number of votes for each option
-const countVoters = (knex, event_id) => {
+const getVoterInitials = (knex, event_id) => {
   return new Promise((resolve, reject) => {
     knex.raw(`select a.option_id, STRING_AGG(a.name,', ') as name
     from (select c.option_id, concat(left(b.first_name,1),left(b.last_name,1)) as name
     from options a, users b, option_voters c where a.id=c.option_id and b.id=c.person_id and a.event_id = ${event_id}) as a
     group by a.option_id;`)
       .then(result => {
-        result.rows.forEach((option, index) => {
-          const counts = option.name.split(',').length;
-          result.rows[index].counts = counts;
-        })
-        resolve(result.rows);
+        resolve(countVoters(result.rows));
       })
   })
 }
@@ -55,7 +59,7 @@ const countVoters = (knex, event_id) => {
 async function getEventRecord(knex, url) {
   const event_id = await getEventId(knex, url);
   const eventRecord = await checkExistingEvent(knex, url);
-  const voterCounts = await countVoters(knex, event_id);
+  const voterCounts = await getVoterInitials(knex, event_id);
 
   return { eventRecord, voterCounts };
 }
