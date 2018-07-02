@@ -83,13 +83,13 @@ module.exports = knex => {
 
   //check if email exists and if exists, returns voters info
   router.post('/voters', (req, res) => {
-    const email = req.body.email;
+    const { email } = req.body;
     knex.raw('select * from users where email = ?', email)
-      .then(function (result) {
+      .then(result => {
         if (result.rowCount) {
           knex.raw('select * from option_voters where person_id = ?', result.rows[0].id)
-            .then(function (lines) {
-              let myOptions = [];
+            .then(lines => {
+              const myOptions = [];
               for (let i = 0; i < lines.rows.length; i++) {
                 myOptions.push(lines.rows[i].option_id);
               }
@@ -103,28 +103,25 @@ module.exports = knex => {
   });
 
   router.post('/events/:event_id/vote', (req, res) => {
-
     // fields that we need
-    let event_id = req.body.event_id;
-    let person_id = req.body.person_id;
-    let voter_first_name = req.body.voter_first_name;
-    let voter_last_name = req.body.voter_last_name;
-    let voter_email = req.body.voter_email;
-    let poll_url = req.body.poll_url;
-    let poll_info = req.body.poll_info;
-    let path = "/events/" + poll_url;
+    const { voter_first_name, voter_last_name, voter_email, poll_url, poll_info } = req.body;
+    // let path = "/events/" + poll_url;
 
     // check if the fields have some value
     if (!voter_email || !voter_first_name || !voter_last_name) {
-      res.status(302).render('poll', { poll: JSON.parse(poll_info), message: 'Please fill your e-mail and name' });
+      res.status(302).render('poll', {
+        poll: JSON.parse(poll_info), message: 'Please fill your e-mail and name'
+      });
     }
 
     // function to filter keys in a object and return the values of this filter
     let filterValues = (obj, filter) => {
       let key, keys = []
-      for (key in obj)
-        if (obj.hasOwnProperty(key) && filter.test(key))
+      for (key in obj) {
+        if (obj.hasOwnProperty(key) && filter.test(key)) {
           keys.push(obj[key])
+        }
+      }
       return keys
     }
 
