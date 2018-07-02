@@ -1,7 +1,10 @@
 'use strict';
 const express = require('express');
 const router = express.Router();
-const { castVotes, filterObj, getEventRecord, updateFormData, generateRandomString, capitaliseFirstLetter } = require('../libs/query-helpers');
+const castVotes = require('../libs/update-voter-queries');
+const getEventRecord = require('../libs/update-event-queries');
+const updateFormData = require('../libs/update-form-queries');
+const { filterObj, generateRandomString, capitaliseFirstLetter } = require('../libs/query-helpers');
 
 module.exports = knex => {
   // root. redirect to /home with http status of 302
