@@ -8,11 +8,6 @@ const {title, description, poll_url, event_id} = poll.eventRecord[0];
 // TOTAL OF VOTES BY EACH OPTIONS OF THE EVENT
 let totals = poll.voterCounts;
 
-let name = poll.voterCounts[0].name;
-var re = /\s*,\s*/;
-var nameList = name.split(re);
-console.log(nameList);
-
 function convertNames(names) {
   let re = /\s*,\s*/;
   let result = names.split(re);
