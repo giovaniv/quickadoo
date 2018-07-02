@@ -61,7 +61,6 @@ module.exports = knex => {
       poll_url: generateRandomString(7)
     };
 
-
     // update form data to appropriate tables
     updateFormData(knex, user, event, formValues).then(ids => {
       console.log('update complete', ids);
