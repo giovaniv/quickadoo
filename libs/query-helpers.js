@@ -1,3 +1,59 @@
+// get event_id corresponding to the given url
+const getEventId = (knex, url) => {
+  return new Promise((resolve, reject) => {
+    knex.select('id').from('events')
+      .where(function () {
+        this.where('events.admin_url', url).orWhere('events.poll_url', url)
+      }).then(eventId => {
+        if (eventId.length) {
+          resolve(eventId[0].id);
+        } else {
+          reject('no event_id found!');
+        }
+      })
+  })
+}
+
+// check if there is any event corresponding to url
+// if there is any, return the result
+const checkExistingEvent = (knex, url) => {
+  return new Promise((resolve, reject) => {
+    knex.select('*', 'options.id as option_id').from('options')
+      .join('events', 'options.event_id', 'events.id')
+      .join('users', 'events.creator_id', 'users.id')
+      .where(function () {
+        this.where('events.admin_url', url).orWhere('events.poll_url', url)
+      })
+      .then(eventRecord => {
+        if (eventRecord.length) {
+          resolve(eventRecord);
+        } else {
+          reject('no url found!');
+        }
+      })
+  })
+};
+
+// count the number of votes for each option
+const countVoters = (knex, event_id) => {
+  return new Promise((resolve, reject) => {
+    knex.raw(`select option_id, count(person_id) from
+        (select id from options where event_id = ${event_id}) as tb1
+        join option_voters on tb1.id = option_voters.option_id group by option_id;`)
+      .then(result => {
+        resolve(result.rows);
+      })
+  })
+}
+
+// return event record and the number of votes for the event options
+async function getEventRecord(knex, url) {
+  const event_id = await getEventId(knex, url);
+  const eventRecord = await checkExistingEvent(knex, url);
+  const voterCounts = await countVoters(knex, event_id);
+  return { eventRecord, voterCounts };
+}
+
 // calculate how many options were returned
 const calculateOptionLen = (options, fields) => (Object.keys(options).length - 5) / fields.length;
 
@@ -47,7 +103,7 @@ const checkExistingUser = (knex, userObj) => {
       .then(user_id => {
         resolve(user_id);
       })
-      .catch(err =>{
+      .catch(err => {
         reject(err);
       })
   });
@@ -72,29 +128,30 @@ const insertTbRow = (knex, insertObj, tb) => {
 async function updateFormData(knex, userObj, eventObj, optionForm) {
   // check if user exists. return row_id if exists or null for new record
   let userRecord = await checkExistingUser(knex, userObj);
-  let userId = '';
+  let user_id = '';
   if (userRecord.length) {
     // user exists in db. insert the user_id and the event record in events tb
-    userId = userRecord[0].id;
-    console.log(`user exists. user_id = ${userId}`);
+    user_id = userRecord[0].id;
+    console.log(`user exists. user_id = ${user_id}`);
   } else {
     // user doesn't exist in db. insert the new user record in users tb
-    userId = await insertTbRow(knex, userObj, 'users');
-    console.log(`user DOESN'T exist. added user_id: ${userId}`);
+    user_id = await insertTbRow(knex, userObj, 'users');
+    console.log(`user DOESN'T exist. added user_id: ${user_id}`);
   }
   // append user_id into the event object
-  eventObj.creator_id = userId;
+  eventObj.creator_id = user_id;
   // insert it to events tb
-  const eventId = await insertTbRow(knex, eventObj, 'events');
+  const event_id = await insertTbRow(knex, eventObj, 'events');
 
   // process the options obj
-  const optionInputs = parseOptions(optionForm, eventId);
+  const optionInputs = parseOptions(optionForm, event_id);
   // insert it to options tb
-  const optionId = await insertTbRow(knex, optionInputs, 'options');
-  return { user_id: userId, event_id: eventId, option_id: optionId };
+  const option_id = await insertTbRow(knex, optionInputs, 'options');
+  return { user_id, event_id, option_id };
 }
 
 module.exports = {
+  getEventRecord,
   updateFormData,
   generateRandomString,
   capitaliseFirstLetter

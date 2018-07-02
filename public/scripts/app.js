@@ -1,23 +1,31 @@
 $(() => {
   const { activateCopyBtn, activateDeleteBtn, makeUrlCopyBtn } = activateBtns;
   const { selectFirstField, validateForm, submitEventForm } = formFunc;
+  const { dtPickerConfig, activateCalendar } = makeCalendar;
   // change all icon cursors to pointer
   $('i.material-icons').css('cursor', 'pointer');
+
+  // activate calendar
+  activateCalendar();
+
   // activate copy and delete button for options
-  activateCopyBtn();
+  activateCopyBtn(dtPickerConfig);
   activateDeleteBtn();
+
   // activate the url-copy button
   makeUrlCopyBtn();
 
 
   // auto focus input[name="first_name"]
   selectFirstField();
+
   // activate form validator
   validateForm();
+
   // submit event form
   submitEventForm();
 
-  const handler = function(){}
+  const handler = function () { }
   $('input[name="name"]').blur(function () {
     // option section
     const $optionSection = $('.option');
