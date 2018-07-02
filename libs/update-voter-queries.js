@@ -85,7 +85,9 @@ async function castVotes(knex, userEmail, voterData, selectedOptions) {
     userId = voterInfo.rows[0].id;
   }
   await deleteExistingOptionVoters(knex, userId);
-  await updateOptionVoters(knex, userId, selectedOptions);
+  if (selectedOptions.length > 0) {
+    await updateOptionVoters(knex, userId, selectedOptions);
+  }
 }
 
 module.exports = { validateVoters, castVotes };
