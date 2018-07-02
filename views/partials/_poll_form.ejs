@@ -75,7 +75,8 @@ function myFunction() {
     </p>
     <p>
       <input type="text" value="http://10.30.33.183:8080/events/<%=poll_url %>" id="myInput" size=40 readonly>
-      <button onclick="myFunction()">Copy text</button>
+      <button class='btn btn-warning btn-sm' onclick="myFunction()">Copy text</button>
+
     </p>
   </div>
 
@@ -100,13 +101,13 @@ function myFunction() {
             <tbody>
               <tr>
                 <td>
-                  <input type=email name="voter_email" placeholder="E-mail">
+                  <input type=email class='form-control' name="voter_email" placeholder="E-mail">
                 </td>
                 <td>
-                  <input type=text name="voter_first_name" placeholder="First name">
+                  <input type=text class='form-control' name="voter_first_name" placeholder="First name">
                 </td>
                 <td>
-                  <input type=text name="voter_last_name" placeholder="Last name">
+                  <input type=text class='form-control' name="voter_last_name" placeholder="Last name">
                 </td>
               </tr>
             </tbody>
