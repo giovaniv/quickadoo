@@ -37,6 +37,7 @@ $(() => {
 
 
   $('input[name="voter_email"]').blur(function () {
+    console.log('entrou');
     let email = $(this).val();
     $.ajax('/voters', {
       method: 'POST',
