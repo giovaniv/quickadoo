@@ -56,15 +56,20 @@
     <% if(locals.formData){ %>
       <!-- if formData exists, loop through the array and display all options -->
       <% formData.forEach(option => { %>
-            <%- include('_option_form', { option: option }) %>
-              <% }); %>
-      <% }else{ %>
-        <!-- if formData doesn't exist, display the default empty option div -->
-        <%- include('_option_form') %>
-          <% } %>
+        <%- include('_option_form', { option: option }) %>
+          <% }); %>
+            <!-- option end -->
+            <a href='/home' class='btn btn-success'>RETURN</a>
+            <% }else{ %>
+              <!-- if formData doesn't exist, display the default empty option div -->
+              <%- include('_option_form') %>
+                <!-- option end -->
+                <div class='form-group'>
+                  <input type='submit' class='btn btn-primary' value='SUBMIT'>
+                </div>
+                <% } %>
   </div>
-  <!-- option end -->
-  <div class='form-group'>
-    <input type='submit' class='btn btn-primary' value='SUBMIT'>
-  </div>
+
+
+
 </form>
