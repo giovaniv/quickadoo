@@ -84,6 +84,7 @@ module.exports = knex => {
   //check if email exists and if exists, returns voters info
   router.post('/voters', (req, res) => {
     const { email } = req.body;
+    console.log(email);
     knex.raw('select * from users where email = ?', email)
       .then(result => {
         if (result.rowCount) {
@@ -104,7 +105,10 @@ module.exports = knex => {
 
   router.post('/events/:event_id/vote', (req, res) => {
     // fields that we need
-    const { voter_first_name, voter_last_name, voter_email, poll_url, poll_info } = req.body;
+    let { voter_first_name, voter_last_name, voter_email, poll_url, poll_info } = req.body;
+    voter_first_name = capitaliseFirstLetter(voter_first_name);
+    voter_last_name = capitaliseFirstLetter(voter_last_name);
+
     // let path = "/events/" + poll_url;
 
     // check if the fields have some value
