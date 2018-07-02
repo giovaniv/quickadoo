@@ -37,9 +37,10 @@ const checkExistingEvent = (knex, url) => {
 // count the number of votes for each option
 const countVoters = (knex, event_id) => {
   return new Promise((resolve, reject) => {
-    knex.raw(`select option_id, count(person_id) from
-        (select id from options where event_id = ${event_id}) as tb1
-        join option_voters on tb1.id = option_voters.option_id group by option_id;`)
+    knex.raw(`select a.option_id, STRING_AGG(a.name,', ') as name
+    from (select c.option_id, concat(left(b.first_name,1),left(b.last_name,1)) as name
+    from options a, users b, option_voters c where a.id=c.option_id and b.id=c.person_id and a.event_id = ${event_id}) as a
+    group by a.option_id;`)
       .then(result => {
         resolve(result.rows);
       })
@@ -51,6 +52,7 @@ async function getEventRecord(knex, url) {
   const event_id = await getEventId(knex, url);
   const eventRecord = await checkExistingEvent(knex, url);
   const voterCounts = await countVoters(knex, event_id);
+
   return { eventRecord, voterCounts };
 }
 
