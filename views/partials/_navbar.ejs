@@ -1,7 +1,7 @@
 <section class='nav-wrapper'>
   <article>
     <nav class="navbar navbar-light bg-light">
-      <a class="navbar-brand" href="#">
+      <a class="navbar-brand" href="/">
         <img src="/images/logo.png" alt="quickadoo_logo">
       </a>
     </nav>
@@ -13,11 +13,11 @@
         <span class="input-group-addon">
           <i class="material-icons">file_copy</i>
         </span>
-        <input type="text" readonly class="form-control" value='<%= `localhost:8080/events/${formData[0].poll_url}` %>' />
+        <input type="text" readonly class="form-control" value='<%= `http://10.30.33.183:8080/events/${formData[0].poll_url}` %>' />
       </div>
     </article>
     <span class="alert alert-danger" role="alert">
-      <%= `Admin URL: localhost:8080/events/${formData[0].admin_url}` %>
+      <%= `Admin URL: http://10.30.33.183:8080/events/${formData[0].admin_url}` %>
     </span>
     <% } %>
 </section>
