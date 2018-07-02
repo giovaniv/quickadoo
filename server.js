@@ -58,6 +58,6 @@ app.use('/', usersRoutes(knex));
 // listen to port
 // if we set the IP address to '0.0.0.0', anyone can view the web page through my IP address
 // how to check IP address: 'ifconfig' on linux terminal -> check 'inet'
-app.listen(PORT, '0.0.0.0', () => {
+app.listen(PORT, IP, () => {
   console.log("Example app listening on port " + PORT);
 });

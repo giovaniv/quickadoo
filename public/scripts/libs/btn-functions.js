@@ -1,8 +1,10 @@
 const getNextIdNumber = ($parentDiv, delim) => {
   const idArray = [];
-  $parentDiv.children().each(function (index) {
-    const childrenId = Number($(this).attr('id').split(delim)[1]);
-    idArray.push(childrenId);
+  $parentDiv.children().each(function () {
+    if ($(this).attr('id') !== undefined) {
+      const childrenId = Number($(this).attr('id').split(delim)[1]);
+      idArray.push(childrenId);
+    }
   })
   return Math.max(...idArray);
 };
