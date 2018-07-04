@@ -30,7 +30,7 @@ function getNames(data,limit) {
         if (i === upTo) {
           result += data[i];
         } else {
-          result += data[i] + ', ';
+          result += data[i] + ' ';
         }
       }
       result += ' (+' + dif + ')';
@@ -41,7 +41,7 @@ function getNames(data,limit) {
       if (i === data.length - 1) {
         result += data[i];
       } else {
-        result += data[i] + ', ';
+        result += data[i] + ' ';
       }
     }
     return result;
@@ -149,9 +149,9 @@ function getNames(data,limit) {
                   <%
                   totals.forEach((x,index)=>{
                     if (option_id === x.option_id) { %>
-                    <span class='badge badge-primary'>
+                    <!-- <span class='badge badge-primary'> -->
                       <%=getNames(convertNames(x.name),3)%>
-                    </span>
+                    <!-- </span> -->
 
                     <%}
                     })
